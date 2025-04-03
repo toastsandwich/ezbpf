@@ -99,8 +99,13 @@ ELSE     : 'else' ;
 # BPF map tokens
 MAP      : 'map' ;
 
-# Import statements
-USE : 'use' ;
+# BPF map types
+BPF_MAP_TYPE_HASH           : 'BPF_MAP_TYPE_HASH' ;
+BPF_MAP_TYPE_ARRAY          : 'BPF_MAP_TYPE_ARRAY' ;
+BPF_MAP_TYPE_PERCPU_HASH    : 'BPF_MAP_TYPE_PERCPU_HASH' ;
+BPF_MAP_TYPE_PERCPU_ARRAY   : 'BPF_MAP_TYPE_PERCPU_ARRAY' ;
+BPF_MAP_TYPE_LRU_HASH       : 'BPF_MAP_TYPE_LRU_HASH' ;
+BPF_MAP_TYPE_LRU_PERCPU_HASH: 'BPF_MAP_TYPE_LRU_PERCPU_HASH' ;
 
 # Identifier (placed **AFTER** keywords)
 IDENTIFIER : ID_START ID_PART* ;
@@ -177,15 +182,22 @@ args: arg (COMMA arg)* ;
 param: IDENTIFIER COLON type ;
 params: param (COMMA param)* ;
 
-useStmt: USE IDENTIFIER SEMI ;
-
 varInitStmt: VAR IDENTIFIER COLON type SEMI ;
 
 varDeclStmt: VAR IDENTIFIER COLON type assign expression SEMI ;
 
 constDeclStmt: CONST IDENTIFIER COLON type ASSIGN expression SEMI;
 
-mapDeclStmt: MAP IDENTIFIER COLON TLBRA type COMMA type COMMA DEC_LITERAL TRBRA SEMI;
+mapType
+    : BPF_MAP_TYPE_HASH
+    | BPF_MAP_TYPE_ARRAY
+    | BPF_MAP_TYPE_PERCPU_HASH
+    | BPF_MAP_TYPE_PERCPU_ARRAY
+    | BPF_MAP_TYPE_LRU_HASH
+    | BPF_MAP_TYPE_LRU_PERCPU_HASH
+    ;
+
+mapDeclStmt: MAP IDENTIFIER COLON mapType TLBRA type COMMA type COMMA DEC_LITERAL TRBRA SEMI;
 
 structDeclStmt: STRUCT IDENTIFIER LBRA varInitStmt* RBRA SEMI ;
 
@@ -208,4 +220,5 @@ stmts: (varInitStmt
       | funcCallStmt
       )* ;
 
-prog: useStmt? mapDeclStmt* funcDeclStmt+ ;
+prog: mapDeclStmt* funcDeclStmt+ ;
+

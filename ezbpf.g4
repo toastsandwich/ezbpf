@@ -1,111 +1,211 @@
 grammar ezbpf;
 
-compilationUnit : (structDefinition | bpfMapDefinition | globalVariableDeclaration | functionDefinition)* EOF;
+# Fragment rules
+fragment NUM      : [0-9] ;
+fragment ALPHA    : [a-zA-Z] ;
+fragment ALNUM    : (ALPHA | NUM)+ ;
+fragment HEX      : '0x' [0-9a-fA-F]+ ;
+fragment OCT      : '0' [0-7]+ ;
+fragment BIN      : '0b' [01]+ ;
+fragment ID_START : [a-zA-Z_] ;
+fragment ID_PART  : [a-zA-Z_0-9] ;
+fragment ESC      : '\\' [btnr'"\\] ;
 
-structDefinition : 'struct' Identifier '{' structMember* '}' ;
-structMember     : Identifier ':' type ';' ;
+# Lexer rules
 
-bpfMapDefinition : 'bpf_map' Identifier '{' bpfMapOption* '}' ';' ;
-bpfMapOption     : 'type' ':' Identifier ';'
-                 | 'key' ':' type ';'
-                 | 'value' ':' type ';'
-                 | 'max_entries' ':' INTEGER_LITERAL ';'
-                 ;
+LPAR: '(' ;
+RPAR: ')' ;
+LBRA: '{' ;
+RBRA: '}' ;
+LSQ: '[' ;
+RSQ: ']' ;
+TLBRA: '<' ;
+TRBRA: '>' ;
+COMMA: ',' ;
+SEMI: ';' ;
+COLON: ':' ;
+DOT: '.' ;
 
-globalVariableDeclaration : 'var' Identifier ':' type ('=' expression)? ';' ;
+# Arithmetic operators
+ADD: '+' ;
+SUB: '-' ;
+MUL: '*' ;
+DIV: '/' ;
+MOD: '%' ;
 
-functionDefinition : SEC '(' STRING_LITERAL ')' 'fn' Identifier '(' parameterList? ')' (':' type)? block ;
-parameterList      : parameter (',' parameter)* ;
-parameter          : Identifier ':' type ;
+# Bitwise operators
+BIT_AND: '&' ;
+BIT_OR: '|' ;
+BIT_XOR: '^' ;
+LSHIFT: '<<' ;
+RSHIFT: '>>' ;
 
-block : '{' statement* '}' ;
-statement : variableDeclarationStatement
-          | assignmentStatement
-          | returnStatement
-          | ifStatement
-          | whileStatement
-          | forStatement
-          | functionCallStatement
-          | bpfMapOperationStatement
-          ;
+# Comparison operators
+EQ: '==' ;
+NEQ: '!=' ;
+LT: '<' ;
+GT: '>' ;
+LTE: '<=' ;
+GTE: '>=' ;
 
-variableDeclarationStatement : 'var' Identifier ':' type ('=' expression)? ';' ;
-assignmentStatement        : Identifier '=' expression ';' ;
-returnStatement            : 'return' expression ';' ;
-ifStatement                : 'if' '(' expression ')' block ('else' block)? ;
-whileStatement             : 'while' '(' expression ')' block ;
-forStatement               : 'for' '(' simpleStatement ';' expression ';' simpleStatement ')' block ;
-simpleStatement            : assignmentStatement | variableDeclarationStatement | functionCallStatement ;
-functionCallStatement      : Identifier '(' argumentList? ')' ';' ;
-argumentList             : expression (',' expression)* ;
+# Logical operators
+AND: '&&' ;
+OR: '||' ;
+NOT: '!' ;
 
-bpfMapOperationStatement : Identifier '[' expression ']' '=' expression ';' // map[key] = value
-                         | Identifier '[' expression ']'                       // Accessing map[key] in an expression
-                         | 'delete' Identifier '[' expression ']' ';'         // delete map[key]
-                         ;
+# Assignment
+ASSIGN: '=' ;
+ADD_ASSIGN: '+=' ;
+SUB_ASSIGN: '-=' ;
+MUL_ASSIGN: '*=' ;
+DIV_ASSIGN: '/=' ;
+MOD_ASSIGN: '%=' ;
 
-type : Identifier ('*')? ;
+HEX_LITERAL   : HEX ;
+OCT_LITERAL   : OCT ;
+BIN_LITERAL   : BIN ;
+DEC_LITERAL   : [0-9]+ ;
 
-expression : primaryExpression (operator primaryExpression)* ;
-primaryExpression : Identifier
-                  | INTEGER_LITERAL
-                  | CHAR_LITERAL
-                  | STRING_LITERAL
-                  | '(' expression ')'
-                  | functionCallStatement // Allow function calls within expressions
-                  | bpfMapOperationStatement // Allow map access within expressions
-                  ;
+CHAR_LITERAL  : '\'' (ESC | ~['\\]) '\'' ;  // Single character
+STRING_LITERAL: '"' (ESC | ~["\\])* '"' ;   // String
 
-operator : '==' | '!=' | '<' | '>' | '<=' | '>=' | '+' | '-' | '*' | '/' | '%' | '&&' | '||' | '=' ; // Include assignment here for simplicity in 'for' loops
+__U32    : '__u32' ;
+__U64    : '__u64' ;
+__S32    : '__s32' ;
+__S64    : '__s64' ;
 
-// Fragments for common token patterns
-fragment LETTER : [a-zA-Z];
-fragment DIGIT  : [0-9];
-fragment HEX_DIGIT : [0-9a-fA-F];
-fragment ALNUM  : LETTER | DIGIT | '_';
+U32      : 'u32' ;
+U64      : 'u64' ;
+S32      : 's32' ;
+S64      : 's64' ;
 
-// Lexer rules (tokens)
-Identifier       : LETTER+ ALNUM* ;
-INTEGER_LITERAL  : DIGIT+ ;
-CHAR_LITERAL     : '\'' . '\'' ; // Simple character literal
-STRING_LITERAL   : '"' .*? '"' ;
-WS               : [ \t\r\n]+ -> skip ;
-COMMENT          : '//' .*? '\r'? '\n' -> skip ;
-SEC              : 'SEC' ;
-LPAREN           : '(' ;
-RPAREN           : ')' ;
-LBRACE           : '{' ;
-RBRACE           : '}' ;
-LBRACK           : '[' ;
-RBRACK           : ']' ;
-COLON            : ':' ;
-SEMI             : ';' ;
-COMMA            : ',' ;
-EQUAL            : '=' ;
-PLUS             : '+' ;
-MINUS            : '-' ;
-STAR             : '*' ;
-SLASH            : '/' ;
-PERCENT          : '%' ;
-EQUAL_EQUAL      : '==' ;
-BANG_EQUAL       : '!=' ;
-LT               : '<' ;
-GT               : '>' ;
-LTE              : '<=' ;
-GTE              : '>=' ;
-AND_AND          : '&&' ;
-OR_OR            : '||' ;
-IF               : 'if' ;
-ELSE             : 'else' ;
-WHILE            : 'while' ;
-FOR              : 'for' ;
-VAR              : 'var' ;
-RETURN           : 'return' ;
-STRUCT           : 'struct' ;
-BPF_MAP          : 'bpf_map' ;
-TYPE             : 'type' ;
-KEY              : 'key' ;
-VALUE            : 'value' ;
-MAX_ENTRIES      : 'max_entries' ;
-DELETE           : 'delete' ;
-FN               : 'fn' ;
+VAR      : 'var' ;
+CONST    : 'const' ;
+CHAR     : 'char' ;
+INT      : 'int' ;
+LONG     : 'long' ;
+SHORT    : 'short' ;
+UINT     : 'uint' ;
+
+STRUCT   : 'struct' ;
+
+FN       : 'fn' ;
+RETURN   : 'return' ;
+
+IF       : 'if' ;
+ELSEIF   : 'elif' ;
+ELSE     : 'else' ;
+
+# BPF map tokens
+MAP      : 'map' ;
+
+# Import statements
+USE : 'use' ;
+
+# Identifier (placed **AFTER** keywords)
+IDENTIFIER : ID_START ID_PART* ;
+
+# Whitespace & Comments
+WS            : [ \t\r\n]+ -> skip ;
+COMMENT       : '//' ~[\r\n]* -> skip ;
+MULTI_COMMENT : '/*' ~[*]* '*/' -> skip ;
+
+# Parser rules
+
+type
+    : U32 
+    | U64 
+    | __U32 
+    | __U64 
+    | S32 
+    | S64 
+    | __S32 
+    | __S64 
+    | CHAR 
+    | SHORT 
+    | LONG 
+    | UINT
+    ;
+
+assign
+    : ASSIGN
+    | ADD_ASSIGN
+    | SUB_ASSIGN
+    | MUL_ASSIGN
+    | DIV_ASSIGN
+    | MOD_ASSIGN
+    ;
+
+compare
+    : EQ
+    | NEQ
+    | GT
+    | LT
+    | GTE
+    | LTE
+    | AND
+    | OR
+    | NOT
+    ;
+
+expression
+    : HEX_LITERAL
+    | OCT_LITERAL
+    | BIN_LITERAL
+    | DEC_LITERAL
+    | CHAR_LITERAL
+    | STRING_LITERAL
+    | IDENTIFIER
+    | expression DOT IDENTIFIER     // Struct field access
+    | expression ADD expression
+    | expression SUB expression
+    | expression MUL expression
+    | expression DIV expression
+    | expression MOD expression
+    | expression BIT_AND expression
+    | expression BIT_OR expression
+    | expression BIT_XOR expression
+    | expression LSHIFT expression
+    | expression RSHIFT expression
+    | expression compare expression
+    | LPAR expression RPAR
+    ;
+
+arg: expression ;
+args: arg (COMMA arg)* ;
+
+param: IDENTIFIER COLON type ;
+params: param (COMMA param)* ;
+
+useStmt: USE IDENTIFIER SEMI ;
+
+varInitStmt: VAR IDENTIFIER COLON type SEMI ;
+
+varDeclStmt: VAR IDENTIFIER COLON type assign expression SEMI ;
+
+constDeclStmt: CONST IDENTIFIER COLON type ASSIGN expression SEMI;
+
+mapDeclStmt: MAP IDENTIFIER COLON TLBRA type COMMA type COMMA DEC_LITERAL TRBRA SEMI;
+
+structDeclStmt: STRUCT IDENTIFIER LBRA varInitStmt* RBRA SEMI ;
+
+ifStmt: IF LPAR expression RPAR LBRA stmts* RBRA ;
+
+returnStmt: RETURN expression? SEMI ;  // Optional return value
+
+funcDeclStmt: FN IDENTIFIER LPAR params? RPAR COLON type LBRA stmts* RBRA ;
+
+funcCallStmt: IDENTIFIER LPAR args? RPAR SEMI ;
+
+stmts: (varInitStmt
+      | varDeclStmt
+      | constDeclStmt
+      | mapDeclStmt
+      | structDeclStmt SEMI
+      | ifStmt
+      | returnStmt
+      | funcDeclStmt
+      | funcCallStmt
+      )* ;
+
+prog: useStmt? mapDeclStmt* funcDeclStmt+ ;

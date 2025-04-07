@@ -1,20 +1,31 @@
-package main
+package ezbpf
 
 import (
+	"context"
+
 	"github.com/antlr4-go/antlr/v4"
+	"github.com/fatih/color"
 	"github.com/toastsandwich/ezbpf/grammar"
 )
 
-func main() {
-	i := "var i: int = 10;"
+func Main(ctx context.Context) {
+	var file string
+	if f, ok := ctx.Value("input").(string); ok {
+		file = f
+	}
 
-	input := antlr.NewInputStream(i)
-	lexer := grammar.NewezbpfLexer(input)
+	fs, err := antlr.NewFileStream(file)
+	if err != nil {
+		color.Red(err.Error())
+		return
+	}
+	lexer := grammar.NewezbpfLexer(fs)
+	ts := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 
-	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
-	parser := grammar.NewezbpfParser(tokens)
+	parser := grammar.NewezbpfParser(ts)
 
-	tree := parser.CompilationUnit()
-	listener := NewPrintListener()
-	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
+	tree := parser.Prog()
+
+	dl := NewDevListener()
+	antlr.ParseTreeWalkerDefault.Walk(dl, tree)
 }

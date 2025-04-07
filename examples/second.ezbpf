@@ -1,0 +1,9 @@
+fn five(a: int, b: int): int {
+	return 5+a+b;
+}
+
+fn main() {
+	var a: int = 10;
+	var b: int = five(a, a);
+	var c: int = a + b;
+}

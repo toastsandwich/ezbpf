@@ -1,6 +1,6 @@
 grammar ezbpf;
 
-# Fragment rules
+// Fragment rules
 fragment NUM      : [0-9] ;
 fragment ALPHA    : [a-zA-Z] ;
 fragment ALNUM    : (ALPHA | NUM)+ ;
@@ -11,36 +11,19 @@ fragment ID_START : [a-zA-Z_] ;
 fragment ID_PART  : [a-zA-Z_0-9] ;
 fragment ESC      : '\\' [btnr'"\\] ;
 
-# Lexer rules
-
-LPAR: '(' ;
-RPAR: ')' ;
-LBRA: '{' ;
-RBRA: '}' ;
-LSQ: '[' ;
-RSQ: ']' ;
-TLBRA: '<' ;
-TRBRA: '>' ;
-COMMA: ',' ;
-SEMI: ';' ;
-COLON: ':' ;
-DOT: '.' ;
-
-# Arithmetic operators
+// Operators
 ADD: '+' ;
 SUB: '-' ;
 MUL: '*' ;
 DIV: '/' ;
 MOD: '%' ;
 
-# Bitwise operators
 BIT_AND: '&' ;
 BIT_OR: '|' ;
 BIT_XOR: '^' ;
 LSHIFT: '<<' ;
 RSHIFT: '>>' ;
 
-# Comparison operators
 EQ: '==' ;
 NEQ: '!=' ;
 LT: '<' ;
@@ -48,12 +31,10 @@ GT: '>' ;
 LTE: '<=' ;
 GTE: '>=' ;
 
-# Logical operators
 AND: '&&' ;
 OR: '||' ;
 NOT: '!' ;
 
-# Assignment
 ASSIGN: '=' ;
 ADD_ASSIGN: '+=' ;
 SUB_ASSIGN: '-=' ;
@@ -61,164 +42,84 @@ MUL_ASSIGN: '*=' ;
 DIV_ASSIGN: '/=' ;
 MOD_ASSIGN: '%=' ;
 
+// Symbols
+LPAR: '(' ; RPAR: ')' ; LBRA: '{' ; RBRA: '}' ;
+LSQ: '[' ; RSQ: ']' ; COMMA: ',' ; SEMI: ';' ; COLON: ':' ; DOT: '.' ;
+
+// Literals
 HEX_LITERAL   : HEX ;
 OCT_LITERAL   : OCT ;
 BIN_LITERAL   : BIN ;
 DEC_LITERAL   : [0-9]+ ;
+CHAR_LITERAL  : '\'' (ESC | ~['\\]) '\'' ;
+STRING_LITERAL: '"' (ESC | ~["\\])* '"' ;
 
-CHAR_LITERAL  : '\'' (ESC | ~['\\]) '\'' ;  // Single character
-STRING_LITERAL: '"' (ESC | ~["\\])* '"' ;   // String
+// Data types
+UPTR32: '__u32' ; UPTR64: '__u64' ; SPTR32: '__s32' ; SPTR64: '__s64' ;
+U32: 'u32' ; U64: 'u64' ; S32: 's32' ; S64: 's64' ;
+VAR: 'var' ; CONST: 'const' ; CHAR: 'char' ; INT: 'int' ;
+LONG: 'long' ; SHORT: 'short' ; UINT: 'uint' ; VOID: 'void' ;
+STRUCT: 'struct' ; ETHHDR: 'ethhdr'; IPHDR: 'iphdr'; TCPHDR: 'tcphdr'; UDPHDR:'udphdr';
 
-__U32    : '__u32' ;
-__U64    : '__u64' ;
-__S32    : '__s32' ;
-__S64    : '__s64' ;
+// Keywords
+FN: 'fn' ; RETURN: 'return' ;
+IF: 'if' ; ELSEIF: 'elif' ; ELSE: 'else' ;
 
-U32      : 'u32' ;
-U64      : 'u64' ;
-S32      : 's32' ;
-S64      : 's64' ;
-
-VAR      : 'var' ;
-CONST    : 'const' ;
-CHAR     : 'char' ;
-INT      : 'int' ;
-LONG     : 'long' ;
-SHORT    : 'short' ;
-UINT     : 'uint' ;
-
-STRUCT   : 'struct' ;
-
-FN       : 'fn' ;
-RETURN   : 'return' ;
-
-IF       : 'if' ;
-ELSEIF   : 'elif' ;
-ELSE     : 'else' ;
-
-# BPF map tokens
-MAP      : 'map' ;
-
-# BPF map types
-BPF_MAP_TYPE_HASH           : 'BPF_MAP_TYPE_HASH' ;
-BPF_MAP_TYPE_ARRAY          : 'BPF_MAP_TYPE_ARRAY' ;
-BPF_MAP_TYPE_PERCPU_HASH    : 'BPF_MAP_TYPE_PERCPU_HASH' ;
-BPF_MAP_TYPE_PERCPU_ARRAY   : 'BPF_MAP_TYPE_PERCPU_ARRAY' ;
-BPF_MAP_TYPE_LRU_HASH       : 'BPF_MAP_TYPE_LRU_HASH' ;
+// BPF Map tokens
+MAP: 'map' ;
+BPF_MAP_TYPE_HASH: 'BPF_MAP_TYPE_HASH' ;
+BPF_MAP_TYPE_ARRAY: 'BPF_MAP_TYPE_ARRAY' ;
+BPF_MAP_TYPE_PERCPU_HASH: 'BPF_MAP_TYPE_PERCPU_HASH' ;
+BPF_MAP_TYPE_PERCPU_ARRAY: 'BPF_MAP_TYPE_PERCPU_ARRAY' ;
+BPF_MAP_TYPE_LRU_HASH: 'BPF_MAP_TYPE_LRU_HASH' ;
 BPF_MAP_TYPE_LRU_PERCPU_HASH: 'BPF_MAP_TYPE_LRU_PERCPU_HASH' ;
 
-# Identifier (placed **AFTER** keywords)
-IDENTIFIER : ID_START ID_PART* ;
+// Identifier
+IDENTIFIER: ID_START ID_PART* ;
 
-# Whitespace & Comments
-WS            : [ \t\r\n]+ -> skip ;
-COMMENT       : '//' ~[\r\n]* -> skip ;
-MULTI_COMMENT : '/*' ~[*]* '*/' -> skip ;
+// Whitespace & Comments
+WS: [ \t\r\n]+ -> skip ;
+COMMENT: '//' ~[\r\n]* -> skip ;
+MULTI_COMMENT: '/*' ~[*]* '*/' -> skip ;
 
-# Parser rules
+// Parser rules
+type: U32 | U64 | UPTR32 | UPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | SHORT | LONG | UINT | INT | IDENTIFIER;
+assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
+compare: EQ | NEQ | GT | LT | GTE | LTE | AND | OR | NOT;
 
-type
-    : U32 
-    | U64 
-    | __U32 
-    | __U64 
-    | S32 
-    | S64 
-    | __S32 
-    | __S64 
-    | CHAR 
-    | SHORT 
-    | LONG 
-    | UINT
-    ;
+expression:
+    HEX_LITERAL | OCT_LITERAL | BIN_LITERAL | DEC_LITERAL | CHAR_LITERAL | STRING_LITERAL | IDENTIFIER |
+    expression DOT IDENTIFIER | expression ADD expression | expression SUB expression |
+    expression MUL expression | expression DIV expression | expression MOD expression |
+    expression BIT_AND expression | expression BIT_OR expression | expression BIT_XOR expression |
+    expression LSHIFT expression | expression RSHIFT expression | expression compare expression |
+    LPAR expression RPAR |
+    IDENTIFIER LBRA structFieldAssign* RBRA |
+    IDENTIFIER LPAR args? RPAR ;
 
-assign
-    : ASSIGN
-    | ADD_ASSIGN
-    | SUB_ASSIGN
-    | MUL_ASSIGN
-    | DIV_ASSIGN
-    | MOD_ASSIGN
-    ;
-
-compare
-    : EQ
-    | NEQ
-    | GT
-    | LT
-    | GTE
-    | LTE
-    | AND
-    | OR
-    | NOT
-    ;
-
-expression
-    : HEX_LITERAL
-    | OCT_LITERAL
-    | BIN_LITERAL
-    | DEC_LITERAL
-    | CHAR_LITERAL
-    | STRING_LITERAL
-    | IDENTIFIER
-    | expression DOT IDENTIFIER     // Struct field access
-    | expression ADD expression
-    | expression SUB expression
-    | expression MUL expression
-    | expression DIV expression
-    | expression MOD expression
-    | expression BIT_AND expression
-    | expression BIT_OR expression
-    | expression BIT_XOR expression
-    | expression LSHIFT expression
-    | expression RSHIFT expression
-    | expression compare expression
-    | LPAR expression RPAR
-    ;
+structFieldAssign: IDENTIFIER COLON expression (COMMA IDENTIFIER COLON expression)* ;
 
 arg: expression ;
 args: arg (COMMA arg)* ;
-
 param: IDENTIFIER COLON type ;
 params: param (COMMA param)* ;
 
 varInitStmt: VAR IDENTIFIER COLON type SEMI ;
-
 varDeclStmt: VAR IDENTIFIER COLON type assign expression SEMI ;
+constDeclStmt: CONST IDENTIFIER COLON type assign expression SEMI;
 
-constDeclStmt: CONST IDENTIFIER COLON type ASSIGN expression SEMI;
+mapType: BPF_MAP_TYPE_HASH | BPF_MAP_TYPE_ARRAY | BPF_MAP_TYPE_PERCPU_HASH |
+         BPF_MAP_TYPE_PERCPU_ARRAY | BPF_MAP_TYPE_LRU_HASH | BPF_MAP_TYPE_LRU_PERCPU_HASH;
 
-mapType
-    : BPF_MAP_TYPE_HASH
-    | BPF_MAP_TYPE_ARRAY
-    | BPF_MAP_TYPE_PERCPU_HASH
-    | BPF_MAP_TYPE_PERCPU_ARRAY
-    | BPF_MAP_TYPE_LRU_HASH
-    | BPF_MAP_TYPE_LRU_PERCPU_HASH
-    ;
+mapDeclStmt: MAP IDENTIFIER COLON mapType LT type COMMA type COMMA DEC_LITERAL GT SEMI;
 
-mapDeclStmt: MAP IDENTIFIER COLON mapType TLBRA type COMMA type COMMA DEC_LITERAL TRBRA SEMI;
+structDataMemStmt: IDENTIFIER COLON type SEMI ;
+structDeclStmt: STRUCT IDENTIFIER LBRA structDataMemStmt* RBRA ;
+ifStmt: IF LPAR expression RPAR LBRA stmts RBRA ;
+returnStmt: RETURN expression? SEMI ;
+funcDeclStmt: FN IDENTIFIER LPAR params? RPAR COLON type LBRA stmts RBRA;
 
-structDeclStmt: STRUCT IDENTIFIER LBRA varInitStmt* RBRA SEMI ;
+stmts: (varInitStmt | varDeclStmt | constDeclStmt | mapDeclStmt | structDeclStmt | ifStmt | returnStmt | funcDeclStmt)* ;
 
-ifStmt: IF LPAR expression RPAR LBRA stmts* RBRA ;
-
-returnStmt: RETURN expression? SEMI ;  // Optional return value
-
-funcDeclStmt: FN IDENTIFIER LPAR params? RPAR COLON type LBRA stmts* RBRA ;
-
-funcCallStmt: IDENTIFIER LPAR args? RPAR SEMI ;
-
-stmts: (varInitStmt
-      | varDeclStmt
-      | constDeclStmt
-      | mapDeclStmt
-      | structDeclStmt SEMI
-      | ifStmt
-      | returnStmt
-      | funcDeclStmt
-      | funcCallStmt
-      )* ;
-
-prog: mapDeclStmt* funcDeclStmt+ ;
+prog: structDeclStmt* mapDeclStmt* funcDeclStmt+ ;
 

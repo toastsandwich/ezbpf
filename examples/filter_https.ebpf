@@ -1,0 +1,65 @@
+// Main XDP program to filter out non-HTTPS packets
+SEC("xdp") 
+fn filter_https_packets(ctx: xdp_md*) : u32 {
+    // Initialize action to drop packets
+    var action: u32 = XDP_DROP;
+
+    // Get ethernet header
+    var eth: ethhdr* = ctx.data;
+    var eth_len: u32 = sizeof(eth);
+
+    // Check if packet is big enough for eth + ip
+    if (ctx.data + eth_len > ctx.data_end) {
+        return action; // Drop if not enough data
+    }
+
+    // Get IP header
+    var iph: iphdr* = ctx.data + eth_len;
+    var ip_len: u32 = sizeof(iph);
+
+    // Check if packet is big enough for IP header
+    if (ctx.data + eth_len + ip_len > ctx.data_end) {
+        return action; // Drop if not enough data
+    }
+
+    // Check if the protocol is TCP
+    if (iph.protocol != 6) { // 6 is the protocol number for TCP
+        return action; // Drop if not TCP
+    }
+
+    // Get TCP header
+    var tcph: tcphdr* = ctx.data + eth_len + ip_len;
+    var tcp_len: u32 = sizeof(tcph);
+
+    // Check if packet is big enough for TCP header
+    if (ctx.data + eth_len + ip_len + tcp_len > ctx.data_end) {
+        return action; // Drop if not enough data
+    }
+
+    // Check if the destination port is 443 (HTTPS)
+    if (tcph.dst_port == 443) {
+        action = XDP_PASS; // Allow if destination port is 443
+    }
+
+    // Update packet statistics
+    var key: ip_key;
+    key.src_ip = iph.saddr;
+    key.dst_ip = iph.daddr;
+
+    var stats: packet_stats* = packet_stats_map[key];
+    if (stats == 0) {
+        var new_stats: packet_stats;
+        new_stats.dropped = 0;
+        new_stats.allowed = 0;
+        packet_stats_map[key] = new_stats;
+        stats = packet_stats_map[key];
+    }
+
+    if (action == XDP_PASS) {
+        stats.allowed += 1;
+    } else {
+        stats.dropped += 1;
+    }
+
+    return action; // Return the action (XDP_PASS or XDP_DROP)
+}

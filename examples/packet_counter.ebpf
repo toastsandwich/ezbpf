@@ -1,0 +1,70 @@
+struct ip_key {
+    src_ip: u32;
+    dst_ip: u32;
+};
+
+struct ip_stats {
+    rx_packets: u64;
+    tx_packets: u64;
+    rx_bytes: u64;
+    tx_bytes: u64;
+};
+
+bpf_map ip_stats_map {
+    type: hash;
+    key: ip_key;
+    value: ip_stats;
+    max_entries: 10000;
+};
+
+var IPPROTO_TCP: u8 = 6;
+var IPPROTO_UDP: u8 = 17;
+
+fn update_stats(key: ip_key*, stats: ip_stats*, is_rx: u8, bytes: u32) {
+    if (is_rx == 1) {
+        stats.rx_packets = stats.rx_packets + 1;
+        stats.rx_bytes = stats.rx_bytes + bytes;
+    } else {
+        stats.tx_packets = stats.tx_packets + 1;
+        stats.tx_bytes = stats.tx_bytes + bytes;
+    }
+}
+
+SEC("xdp") fn xdp_packet_counter(ctx: xdp_md*) : u32 {
+    var action: u32 = 0;
+    var eth: ethhdr* = ctx.data;
+    var eth_len: u32 = sizeof(eth);
+
+    if (ctx.data + eth_len > ctx.data_end) {
+        return action;
+    }
+
+    var iph: iphdr* = ctx.data + eth_len;
+    var ip_len: u32 = sizeof(iph);
+
+    if (ctx.data + eth_len + ip_len > ctx.data_end) {
+        return action;
+    }
+
+    var key: ip_key;
+    key.src_ip = iph.saddr;
+    key.dst_ip = iph.daddr;
+
+    var stats: ip_stats* = ip_stats_map[key];
+    
+    if (stats == 0) {
+        var new_stats: ip_stats;
+        new_stats.rx_packets = 0;
+        new_stats.tx_packets = 0;
+        new_stats.rx_bytes = 0;
+        new_stats.tx_bytes = 0;
+        ip_stats_map[key] = new_stats;
+        stats = ip_stats_map[key];
+    }
+
+    var is_rx: u8 = 1;
+    var pkt_bytes: u32 = ctx.data_end - ctx.data;
+    update_stats(&key, stats, is_rx, pkt_bytes);
+
+    return action;
+} 

@@ -1,0 +1,25 @@
+struct foo {
+	bar: int;
+	cat: __u32;
+}
+
+map mm: BPF_MAP_TYPE_HASH<__u32, __u32, 1024>;
+
+fn Foo(): foo {
+	var f: foo = foo{ bar: 9, cat: 10 };
+	return f;
+}
+
+fn new(): int {
+	var i: int = 10;
+	var j: long = i + 10;
+	var k: __u32 = j * j + 10;
+
+	var g: foo = foo{};
+	var f: foo = Foo();
+	return f;
+}
+
+fn temp(): int {
+	return 190;
+}

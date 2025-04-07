@@ -7,153 +7,129 @@ import "github.com/antlr4-go/antlr/v4"
 type ezbpfListener interface {
 	antlr.ParseTreeListener
 
-	// EnterCompilationUnit is called when entering the compilationUnit production.
-	EnterCompilationUnit(c *CompilationUnitContext)
-
-	// EnterStructDefinition is called when entering the structDefinition production.
-	EnterStructDefinition(c *StructDefinitionContext)
-
-	// EnterStructMember is called when entering the structMember production.
-	EnterStructMember(c *StructMemberContext)
-
-	// EnterBpfMapDefinition is called when entering the bpfMapDefinition production.
-	EnterBpfMapDefinition(c *BpfMapDefinitionContext)
-
-	// EnterBpfMapOption is called when entering the bpfMapOption production.
-	EnterBpfMapOption(c *BpfMapOptionContext)
-
-	// EnterGlobalVariableDeclaration is called when entering the globalVariableDeclaration production.
-	EnterGlobalVariableDeclaration(c *GlobalVariableDeclarationContext)
-
-	// EnterFunctionDefinition is called when entering the functionDefinition production.
-	EnterFunctionDefinition(c *FunctionDefinitionContext)
-
-	// EnterParameterList is called when entering the parameterList production.
-	EnterParameterList(c *ParameterListContext)
-
-	// EnterParameter is called when entering the parameter production.
-	EnterParameter(c *ParameterContext)
-
-	// EnterBlock is called when entering the block production.
-	EnterBlock(c *BlockContext)
-
-	// EnterStatement is called when entering the statement production.
-	EnterStatement(c *StatementContext)
-
-	// EnterVariableDeclarationStatement is called when entering the variableDeclarationStatement production.
-	EnterVariableDeclarationStatement(c *VariableDeclarationStatementContext)
-
-	// EnterAssignmentStatement is called when entering the assignmentStatement production.
-	EnterAssignmentStatement(c *AssignmentStatementContext)
-
-	// EnterReturnStatement is called when entering the returnStatement production.
-	EnterReturnStatement(c *ReturnStatementContext)
-
-	// EnterIfStatement is called when entering the ifStatement production.
-	EnterIfStatement(c *IfStatementContext)
-
-	// EnterWhileStatement is called when entering the whileStatement production.
-	EnterWhileStatement(c *WhileStatementContext)
-
-	// EnterForStatement is called when entering the forStatement production.
-	EnterForStatement(c *ForStatementContext)
-
-	// EnterSimpleStatement is called when entering the simpleStatement production.
-	EnterSimpleStatement(c *SimpleStatementContext)
-
-	// EnterFunctionCallStatement is called when entering the functionCallStatement production.
-	EnterFunctionCallStatement(c *FunctionCallStatementContext)
-
-	// EnterArgumentList is called when entering the argumentList production.
-	EnterArgumentList(c *ArgumentListContext)
-
-	// EnterBpfMapOperationStatement is called when entering the bpfMapOperationStatement production.
-	EnterBpfMapOperationStatement(c *BpfMapOperationStatementContext)
-
 	// EnterType is called when entering the type production.
 	EnterType(c *TypeContext)
+
+	// EnterAssign is called when entering the assign production.
+	EnterAssign(c *AssignContext)
+
+	// EnterCompare is called when entering the compare production.
+	EnterCompare(c *CompareContext)
 
 	// EnterExpression is called when entering the expression production.
 	EnterExpression(c *ExpressionContext)
 
-	// EnterPrimaryExpression is called when entering the primaryExpression production.
-	EnterPrimaryExpression(c *PrimaryExpressionContext)
+	// EnterStructFieldAssign is called when entering the structFieldAssign production.
+	EnterStructFieldAssign(c *StructFieldAssignContext)
 
-	// EnterOperator is called when entering the operator production.
-	EnterOperator(c *OperatorContext)
+	// EnterArg is called when entering the arg production.
+	EnterArg(c *ArgContext)
 
-	// ExitCompilationUnit is called when exiting the compilationUnit production.
-	ExitCompilationUnit(c *CompilationUnitContext)
+	// EnterArgs is called when entering the args production.
+	EnterArgs(c *ArgsContext)
 
-	// ExitStructDefinition is called when exiting the structDefinition production.
-	ExitStructDefinition(c *StructDefinitionContext)
+	// EnterParam is called when entering the param production.
+	EnterParam(c *ParamContext)
 
-	// ExitStructMember is called when exiting the structMember production.
-	ExitStructMember(c *StructMemberContext)
+	// EnterParams is called when entering the params production.
+	EnterParams(c *ParamsContext)
 
-	// ExitBpfMapDefinition is called when exiting the bpfMapDefinition production.
-	ExitBpfMapDefinition(c *BpfMapDefinitionContext)
+	// EnterVarInitStmt is called when entering the varInitStmt production.
+	EnterVarInitStmt(c *VarInitStmtContext)
 
-	// ExitBpfMapOption is called when exiting the bpfMapOption production.
-	ExitBpfMapOption(c *BpfMapOptionContext)
+	// EnterVarDeclStmt is called when entering the varDeclStmt production.
+	EnterVarDeclStmt(c *VarDeclStmtContext)
 
-	// ExitGlobalVariableDeclaration is called when exiting the globalVariableDeclaration production.
-	ExitGlobalVariableDeclaration(c *GlobalVariableDeclarationContext)
+	// EnterConstDeclStmt is called when entering the constDeclStmt production.
+	EnterConstDeclStmt(c *ConstDeclStmtContext)
 
-	// ExitFunctionDefinition is called when exiting the functionDefinition production.
-	ExitFunctionDefinition(c *FunctionDefinitionContext)
+	// EnterMapType is called when entering the mapType production.
+	EnterMapType(c *MapTypeContext)
 
-	// ExitParameterList is called when exiting the parameterList production.
-	ExitParameterList(c *ParameterListContext)
+	// EnterMapDeclStmt is called when entering the mapDeclStmt production.
+	EnterMapDeclStmt(c *MapDeclStmtContext)
 
-	// ExitParameter is called when exiting the parameter production.
-	ExitParameter(c *ParameterContext)
+	// EnterStructDataMemStmt is called when entering the structDataMemStmt production.
+	EnterStructDataMemStmt(c *StructDataMemStmtContext)
 
-	// ExitBlock is called when exiting the block production.
-	ExitBlock(c *BlockContext)
+	// EnterStructDeclStmt is called when entering the structDeclStmt production.
+	EnterStructDeclStmt(c *StructDeclStmtContext)
 
-	// ExitStatement is called when exiting the statement production.
-	ExitStatement(c *StatementContext)
+	// EnterIfStmt is called when entering the ifStmt production.
+	EnterIfStmt(c *IfStmtContext)
 
-	// ExitVariableDeclarationStatement is called when exiting the variableDeclarationStatement production.
-	ExitVariableDeclarationStatement(c *VariableDeclarationStatementContext)
+	// EnterReturnStmt is called when entering the returnStmt production.
+	EnterReturnStmt(c *ReturnStmtContext)
 
-	// ExitAssignmentStatement is called when exiting the assignmentStatement production.
-	ExitAssignmentStatement(c *AssignmentStatementContext)
+	// EnterFuncDeclStmt is called when entering the funcDeclStmt production.
+	EnterFuncDeclStmt(c *FuncDeclStmtContext)
 
-	// ExitReturnStatement is called when exiting the returnStatement production.
-	ExitReturnStatement(c *ReturnStatementContext)
+	// EnterStmts is called when entering the stmts production.
+	EnterStmts(c *StmtsContext)
 
-	// ExitIfStatement is called when exiting the ifStatement production.
-	ExitIfStatement(c *IfStatementContext)
-
-	// ExitWhileStatement is called when exiting the whileStatement production.
-	ExitWhileStatement(c *WhileStatementContext)
-
-	// ExitForStatement is called when exiting the forStatement production.
-	ExitForStatement(c *ForStatementContext)
-
-	// ExitSimpleStatement is called when exiting the simpleStatement production.
-	ExitSimpleStatement(c *SimpleStatementContext)
-
-	// ExitFunctionCallStatement is called when exiting the functionCallStatement production.
-	ExitFunctionCallStatement(c *FunctionCallStatementContext)
-
-	// ExitArgumentList is called when exiting the argumentList production.
-	ExitArgumentList(c *ArgumentListContext)
-
-	// ExitBpfMapOperationStatement is called when exiting the bpfMapOperationStatement production.
-	ExitBpfMapOperationStatement(c *BpfMapOperationStatementContext)
+	// EnterProg is called when entering the prog production.
+	EnterProg(c *ProgContext)
 
 	// ExitType is called when exiting the type production.
 	ExitType(c *TypeContext)
 
+	// ExitAssign is called when exiting the assign production.
+	ExitAssign(c *AssignContext)
+
+	// ExitCompare is called when exiting the compare production.
+	ExitCompare(c *CompareContext)
+
 	// ExitExpression is called when exiting the expression production.
 	ExitExpression(c *ExpressionContext)
 
-	// ExitPrimaryExpression is called when exiting the primaryExpression production.
-	ExitPrimaryExpression(c *PrimaryExpressionContext)
+	// ExitStructFieldAssign is called when exiting the structFieldAssign production.
+	ExitStructFieldAssign(c *StructFieldAssignContext)
 
-	// ExitOperator is called when exiting the operator production.
-	ExitOperator(c *OperatorContext)
+	// ExitArg is called when exiting the arg production.
+	ExitArg(c *ArgContext)
+
+	// ExitArgs is called when exiting the args production.
+	ExitArgs(c *ArgsContext)
+
+	// ExitParam is called when exiting the param production.
+	ExitParam(c *ParamContext)
+
+	// ExitParams is called when exiting the params production.
+	ExitParams(c *ParamsContext)
+
+	// ExitVarInitStmt is called when exiting the varInitStmt production.
+	ExitVarInitStmt(c *VarInitStmtContext)
+
+	// ExitVarDeclStmt is called when exiting the varDeclStmt production.
+	ExitVarDeclStmt(c *VarDeclStmtContext)
+
+	// ExitConstDeclStmt is called when exiting the constDeclStmt production.
+	ExitConstDeclStmt(c *ConstDeclStmtContext)
+
+	// ExitMapType is called when exiting the mapType production.
+	ExitMapType(c *MapTypeContext)
+
+	// ExitMapDeclStmt is called when exiting the mapDeclStmt production.
+	ExitMapDeclStmt(c *MapDeclStmtContext)
+
+	// ExitStructDataMemStmt is called when exiting the structDataMemStmt production.
+	ExitStructDataMemStmt(c *StructDataMemStmtContext)
+
+	// ExitStructDeclStmt is called when exiting the structDeclStmt production.
+	ExitStructDeclStmt(c *StructDeclStmtContext)
+
+	// ExitIfStmt is called when exiting the ifStmt production.
+	ExitIfStmt(c *IfStmtContext)
+
+	// ExitReturnStmt is called when exiting the returnStmt production.
+	ExitReturnStmt(c *ReturnStmtContext)
+
+	// ExitFuncDeclStmt is called when exiting the funcDeclStmt production.
+	ExitFuncDeclStmt(c *FuncDeclStmtContext)
+
+	// ExitStmts is called when exiting the stmts production.
+	ExitStmts(c *StmtsContext)
+
+	// ExitProg is called when exiting the prog production.
+	ExitProg(c *ProgContext)
 }

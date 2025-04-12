@@ -83,21 +83,40 @@ COMMENT: '//' ~[\r\n]* -> skip ;
 MULTI_COMMENT: '/*' ~[*]* '*/' -> skip ;
 
 // Parser rules
-type: U32 | U64 | UPTR32 | UPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | SHORT | LONG | UINT | INT | IDENTIFIER;
+type: U32 | U64 | UPTR32 | UPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | SHORT | LONG | UINT | INT | VOID | IDENTIFIER;
 assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
 compare: EQ | NEQ | GT | LT | GTE | LTE | AND | OR | NOT;
 
-expression:
-    HEX_LITERAL | OCT_LITERAL | BIN_LITERAL | DEC_LITERAL | CHAR_LITERAL | STRING_LITERAL | IDENTIFIER |
-    expression DOT IDENTIFIER | expression ADD expression | expression SUB expression |
-    expression MUL expression | expression DIV expression | expression MOD expression |
-    expression BIT_AND expression | expression BIT_OR expression | expression BIT_XOR expression |
-    expression LSHIFT expression | expression RSHIFT expression | expression compare expression |
-    LPAR expression RPAR |
-    IDENTIFIER LBRA structFieldAssign* RBRA |
-    IDENTIFIER LPAR args? RPAR ;
+expression
+	: HEX_LITERAL #hexLiteralExpression
+    | OCT_LITERAL #octLiteralExpression
+    | BIN_LITERAL #binLiteralExpression
+    | DEC_LITERAL #decLiteralExpression
+    | CHAR_LITERAL #charLiteralExpression
+    | STRING_LITERAL #stringLiteralExpression
+    | IDENTIFIER #identifierExpression
+    | funcCallExpression #funccallExpression
+    | structInitExpression #structinitExpression
+    | expression DOT IDENTIFIER #dotExpression
+    | LPAR expression RPAR #parExpression
+    | expression MUL expression #mulExpression
+    | expression DIV expression #divExpression
+    | expression MOD expression #modExpression
+    | expression ADD expression #addExpression
+    | expression SUB expression #subExpression
+    | expression LSHIFT expression #lshiftExpression
+    | expression RSHIFT expression #rshiftExpression
+    | expression BIT_AND expression #bitandExpression
+    | expression BIT_OR expression #bitorExpression
+    | expression BIT_XOR expression #bitxorExpression
+    | expression compare expression #compareExpression
+    ;
+
+funcCallExpression: IDENTIFIER LPAR args? RPAR ;
+structInitExpression: IDENTIFIER LBRA structFieldAssign? RBRA ;
 
 structFieldAssign: IDENTIFIER COLON expression (COMMA IDENTIFIER COLON expression)* ;
+
 
 arg: expression ;
 args: arg (COMMA arg)* ;
@@ -119,7 +138,9 @@ ifStmt: IF LPAR expression RPAR LBRA stmts RBRA ;
 returnStmt: RETURN expression? SEMI ;
 funcDeclStmt: FN IDENTIFIER LPAR params? RPAR COLON type LBRA stmts RBRA;
 
-stmts: (varInitStmt | varDeclStmt | constDeclStmt | mapDeclStmt | structDeclStmt | ifStmt | returnStmt | funcDeclStmt)* ;
+stmt: varInitStmt | varDeclStmt | constDeclStmt | mapDeclStmt | structDeclStmt | ifStmt | returnStmt | funcDeclStmt ;
+
+stmts: stmt* ;
 
 prog: structDeclStmt* mapDeclStmt* funcDeclStmt+ ;
 

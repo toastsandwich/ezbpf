@@ -1,16 +1,16 @@
 package ezbpf
 
 import (
-	"context"
-
 	"github.com/antlr4-go/antlr/v4"
 	"github.com/fatih/color"
+	"github.com/toastsandwich/ezbpf/cmd/context"
+	"github.com/toastsandwich/ezbpf/compiler"
 	"github.com/toastsandwich/ezbpf/grammar"
 )
 
 func Main(ctx context.Context) {
 	var file string
-	if f, ok := ctx.Value("input").(string); ok {
+	if f, ok := ctx.Get("input").(string); ok {
 		file = f
 	}
 
@@ -24,8 +24,8 @@ func Main(ctx context.Context) {
 
 	parser := grammar.NewezbpfParser(ts)
 
+	compiler := compiler.NewC()
 	tree := parser.Prog()
-
-	dl := NewDevListener()
-	antlr.ParseTreeWalkerDefault.Walk(dl, tree)
+	code := compiler.Compile(tree)
+	ctx.Put("output", code)
 }

@@ -1,6 +1,6 @@
 .PHONY: grammar build
 grammar:
-	@antlr -o grammar -package grammar -Dlanguage=Go -no-visitor -listener ezbpf.g4
+	@antlr -o grammar -package grammar -Dlanguage=Go -visitor -no-listener ezbpf.g4
 
 build:
 	@go build -o build/ezbpf main.go

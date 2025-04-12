@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/fatih/color"
+	"github.com/toastsandwich/ezbpf/cmd/context"
 	"github.com/toastsandwich/ezbpf/cmd/ezbpf"
 )
 
@@ -17,20 +18,17 @@ func main() {
 		return
 	}
 	input := flag.Arg(0)
-
-	ctx := ezbpf.NewContext()
-	ctx.Put("input", input)
+	ctx := context.ContextWithValue("input", input)
 
 	ezbpf.Main(ctx)
 
-	out := ctx.Get("out")
-
-	file, err := os.Create(*output)
+	code := ctx.Get("output").(string)
+	f, err := os.Create(*output)
 	if err != nil {
 		color.Red(err.Error())
 		return
 	}
-	_, err = file.Write([]byte(out))
+	_, err = f.Write([]byte(code))
 	if err != nil {
 		color.Red(err.Error())
 		return

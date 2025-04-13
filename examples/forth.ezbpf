@@ -1,0 +1,14 @@
+struct pkt_info_t {
+	src_addr: __be32;
+	src_port: __u64;
+	payload: __u64;
+}
+
+fn sample_pkt_info(): pkt_info_t {
+	var pkt: pkt_info_t = pkt_info_t { src_addr: 0b1010101, src_port: 42069, payload: 696969 };
+	return pkt;
+}
+
+fn main(): void {
+	var sample: pkt_info_t = sample_pkt_info();
+}

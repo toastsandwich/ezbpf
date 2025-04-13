@@ -56,7 +56,7 @@ STRING_LITERAL: '"' (ESC | ~["\\])* '"' ;
 
 // Data types
 UPTR32: '__u32' ; UPTR64: '__u64' ; SPTR32: '__s32' ; SPTR64: '__s64' ;
-U32: 'u32' ; U64: 'u64' ; S32: 's32' ; S64: 's64' ;
+U32: 'u32' ; U64: 'u64' ; S32: 's32' ; S64: 's64' ; BEPTR32: '__be32' ; BEPTR64: '__be64' ;
 VAR: 'var' ; CONST: 'const' ; CHAR: 'char' ; INT: 'int' ;
 LONG: 'long' ; SHORT: 'short' ; UINT: 'uint' ; VOID: 'void' ;
 STRUCT: 'struct' ; ETHHDR: 'ethhdr'; IPHDR: 'iphdr'; TCPHDR: 'tcphdr'; UDPHDR:'udphdr';
@@ -83,7 +83,7 @@ COMMENT: '//' ~[\r\n]* -> skip ;
 MULTI_COMMENT: '/*' ~[*]* '*/' -> skip ;
 
 // Parser rules
-type: U32 | U64 | UPTR32 | UPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | SHORT | LONG | UINT | INT | VOID | IDENTIFIER;
+type: U32 | U64 | UPTR32 | UPTR64 | BEPTR32 | BEPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | SHORT | LONG | UINT | INT | VOID | IDENTIFIER;
 assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
 compare: EQ | NEQ | GT | LT | GTE | LTE | AND | OR | NOT;
 

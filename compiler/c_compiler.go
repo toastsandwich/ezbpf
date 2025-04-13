@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"fmt"
+	"log"
 	"runtime/debug"
 	"strings"
 
@@ -19,8 +20,6 @@ type C struct {
 func (c *C) Visit(tree antlr.ParseTree) any {
 	color.Green("-----------------------\n")
 	color.Yellow(fmt.Sprintf("visiting %T\n", tree))
-	color.Blue(tree.GetText())
-	color.Green("-----------------------\n")
 
 	return tree.Accept(c)
 }
@@ -50,6 +49,15 @@ func (c *C) VisitAssign(ctx *grammar.AssignContext) any {
 
 func (c *C) VisitCompare(ctx *grammar.CompareContext) any {
 	return ctx.GetText()
+}
+
+func (c *C) VisitCompareExpression(ctx *grammar.CompareExpressionContext) any {
+	compare := c.Visit(ctx.Compare()).(string)
+	expr1 := c.Visit(ctx.Expression(0)).(string)
+	expr2 := c.Visit(ctx.Expression(1)).(string)
+
+	return fmt.Sprintf("%s %s %s", expr1, compare, expr2)
+
 }
 
 func (c *C) VisitBinLiteralExpression(ctx *grammar.BinLiteralExpressionContext) any {
@@ -85,40 +93,71 @@ func (c *C) VisitBitandExpression(ctx *grammar.BitandExpressionContext) any {
 	return fmt.Sprintf("%s %s %s", exprs[0].GetText(), ctx.BIT_AND().GetText(), exprs[1].GetText())
 }
 
+func (c *C) VisitDecLiteralExpression(ctx *grammar.DecLiteralExpressionContext) any {
+	return ctx.GetText()
+}
+
 func (c *C) VisitHexLiteralExpression(ctx *grammar.HexLiteralExpressionContext) any {
 	return ctx.GetText()
 }
 
-func (c *C) VisitFunccallExpression(ctx *grammar.FunccallExpressionContext) any {
-	ident := ctx.FuncCallExpression().IDENTIFIER().GetText()
-	args := c.Visit(ctx.FuncCallExpression().Args()).(string)
+func (c *C) VisitFuncCallExpression(ctx *grammar.FuncCallExpressionContext) any {
+	var args string
+	ident := ctx.IDENTIFIER().GetText()
+	if ctx.Args() != nil {
+		args = c.Visit(ctx.Args()).(string)
+	}
 	return fmt.Sprintf("%s(%s);", ident, args)
+}
+
+func (c *C) VisitFunccallExpression(ctx *grammar.FunccallExpressionContext) any {
+	return c.Visit(ctx.FuncCallExpression())
 }
 
 func (c *C) VisitStructFieldAssignExpression(ctx *grammar.StructFieldAssignContext) any {
 	exprs := []string{}
+	log.Fatal(ctx.GetText())
 	for _, e := range ctx.AllExpression() {
-		expr := c.Visit(e).(string)
-		exprs = append(exprs, expr)
+		var expr string
+		var ok bool
+		if expr, ok = c.Visit(e).(string); ok {
+			exprs = append(exprs, expr)
+		}
 	}
 	return strings.Join(exprs, ",")
 }
 
+func (c *C) VisitStringInitExpression(ctx *grammar.StructInitExpressionContext) any {
+	return c.Visit(ctx.StructFieldAssign())
+}
+
 func (c *C) VisitStructinitExpression(ctx *grammar.StructinitExpressionContext) any {
-	return "{" + c.Visit(ctx.StructInitExpression().StructFieldAssign()).(string) + "}"
+	var structinitexpr string
+	if val, ok := c.Visit(ctx.StructInitExpression()).(string); ok {
+		structinitexpr = val
+	}
+	return "{" + structinitexpr + "}"
 }
 
 func (c *C) VisitArg(ctx *grammar.ArgContext) any {
 	//exprs
-	expr := c.Visit(ctx.Expression()).(string)
+	var expr string
+	if ctx.Expression() != nil {
+		expr = c.Visit(ctx.Expression()).(string)
+	}
 	return expr
 }
 
 func (c *C) VisitArgs(ctx *grammar.ArgsContext) any {
 	args := []string{}
-	for _, a := range ctx.AllArg() {
-		arg := c.Visit(a).(string)
-		args = append(args, arg)
+	fmt.Println("args", ctx.AllArg())
+	if ctx.AllArg() != nil {
+		for _, a := range ctx.AllArg() {
+			if a != nil {
+				arg := c.Visit(a).(string)
+				args = append(args, arg)
+			}
+		}
 	}
 	return strings.Join(args, ",")
 }
@@ -179,10 +218,20 @@ func (c *C) VisitRshiftExpression(ctx *grammar.RshiftExpressionContext) any {
 
 func (c *C) VisitVarDeclStmt(ctx *grammar.VarDeclStmtContext) any {
 	// var name: type = expression ;
-	ident := ctx.IDENTIFIER().GetText()
-	type_ := c.Visit(ctx.Type_()).(string)
-	expr := c.Visit(ctx.Expression()).(string)
-
+	var ident, type_, expr string
+	var stmt string = ctx.GetText()
+	if ctx.IDENTIFIER() == nil {
+		panic(fmt.Sprintln("missing identifier in", stmt))
+	}
+	ident = ctx.IDENTIFIER().GetText()
+	if ctx.Type_() == nil {
+		panic(fmt.Sprintln("type missing in ", stmt))
+	}
+	type_ = c.Visit(ctx.Type_()).(string)
+	if ctx.Expression() == nil {
+		panic(fmt.Sprintln("expression missing in ", stmt))
+	}
+	expr = c.Visit(ctx.Expression()).(string)
 	return fmt.Sprintf("%s %s = %s;", type_, ident, expr)
 }
 
@@ -290,7 +339,7 @@ func (c *C) VisitStmt(ctx *grammar.StmtContext) any {
 	case ctx.FuncDeclStmt() != nil:
 		return c.Visit(ctx.FuncDeclStmt())
 	default:
-		color.Red("returning nil")
+		fmt.Println("return nil")
 		return nil
 	}
 }
@@ -298,8 +347,12 @@ func (c *C) VisitStmt(ctx *grammar.StmtContext) any {
 func (c *C) VisitStmts(ctx *grammar.StmtsContext) any {
 	stmts := []string{}
 	for _, s := range ctx.AllStmt() {
+		color.Cyan(s.GetText())
 		if stmt, ok := c.Visit(s).(string); ok {
+			color.Magenta(stmt)
 			stmts = append(stmts, stmt)
+		} else {
+			color.Red(s.GetText())
 		}
 	}
 	return strings.Join(stmts, "\n")
@@ -313,16 +366,19 @@ func (c *C) VisitFuncDeclStmt(ctx *grammar.FuncDeclStmtContext) any {
 	}
 	retType := c.Visit(ctx.Type_()).(string) // return type
 	var stmts string
-	if val, ok := c.Visit(ctx.Stmts()).(string); ok {
-		stmts = val
+	if ctx.Stmts() != nil {
+		if val, ok := c.Visit(ctx.Stmts()).(string); ok {
+			stmts = val
+		}
+		color.Yellow(fmt.Sprintf("ctx.Stmts => %s\n", ctx.Stmts().GetText()))
+		// stmts := c.Visit(ctx.Stmts()).(string)
 	}
-	color.Yellow(fmt.Sprintf("ctx.Stmts => %s\n", ctx.Stmts().GetText()))
-	// stmts := c.Visit(ctx.Stmts()).(string)
 	return fmt.Sprintf(`
 %s %s(%s) {
 	%s
 }
-		`,
+
+`,
 		retType,
 		fname,
 		params,
@@ -357,10 +413,11 @@ func NewC() *C {
 func (c *C) Compile(prog grammar.IProgContext) string {
 	defer func() {
 		if r := recover(); r != nil {
+			color.Red("PANICING")
 			c := fmt.Sprintln(c.Builder.String())
 			color.Green(c)
-			stk := debug.Stack()
 			fmt.Println(r)
+			stk := debug.Stack()
 			color.Red(string(stk))
 		}
 	}()

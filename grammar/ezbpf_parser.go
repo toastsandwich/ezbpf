@@ -37,11 +37,11 @@ func ezbpfParserInit() {
 		"'!'", "'='", "'+='", "'-='", "'*='", "'/='", "'%='", "'('", "')'",
 		"'{'", "'}'", "'['", "']'", "','", "';'", "':'", "'.'", "", "", "",
 		"", "", "", "'__u32'", "'__u64'", "'__s32'", "'__s64'", "'u32'", "'u64'",
-		"'s32'", "'s64'", "'var'", "'const'", "'char'", "'int'", "'long'", "'short'",
-		"'uint'", "'void'", "'struct'", "'ethhdr'", "'iphdr'", "'tcphdr'", "'udphdr'",
-		"'fn'", "'return'", "'if'", "'elif'", "'else'", "'map'", "'BPF_MAP_TYPE_HASH'",
-		"'BPF_MAP_TYPE_ARRAY'", "'BPF_MAP_TYPE_PERCPU_HASH'", "'BPF_MAP_TYPE_PERCPU_ARRAY'",
-		"'BPF_MAP_TYPE_LRU_HASH'", "'BPF_MAP_TYPE_LRU_PERCPU_HASH'",
+		"'s32'", "'s64'", "'__be32'", "'__be64'", "'var'", "'const'", "'char'",
+		"'int'", "'long'", "'short'", "'uint'", "'void'", "'struct'", "'ethhdr'",
+		"'iphdr'", "'tcphdr'", "'udphdr'", "'fn'", "'return'", "'if'", "'elif'",
+		"'else'", "'map'", "'BPF_MAP_TYPE_HASH'", "'BPF_MAP_TYPE_ARRAY'", "'BPF_MAP_TYPE_PERCPU_HASH'",
+		"'BPF_MAP_TYPE_PERCPU_ARRAY'", "'BPF_MAP_TYPE_LRU_HASH'", "'BPF_MAP_TYPE_LRU_PERCPU_HASH'",
 	}
 	staticData.SymbolicNames = []string{
 		"", "ADD", "SUB", "MUL", "DIV", "MOD", "BIT_AND", "BIT_OR", "BIT_XOR",
@@ -50,12 +50,12 @@ func ezbpfParserInit() {
 		"MOD_ASSIGN", "LPAR", "RPAR", "LBRA", "RBRA", "LSQ", "RSQ", "COMMA",
 		"SEMI", "COLON", "DOT", "HEX_LITERAL", "OCT_LITERAL", "BIN_LITERAL",
 		"DEC_LITERAL", "CHAR_LITERAL", "STRING_LITERAL", "UPTR32", "UPTR64",
-		"SPTR32", "SPTR64", "U32", "U64", "S32", "S64", "VAR", "CONST", "CHAR",
-		"INT", "LONG", "SHORT", "UINT", "VOID", "STRUCT", "ETHHDR", "IPHDR",
-		"TCPHDR", "UDPHDR", "FN", "RETURN", "IF", "ELSEIF", "ELSE", "MAP", "BPF_MAP_TYPE_HASH",
-		"BPF_MAP_TYPE_ARRAY", "BPF_MAP_TYPE_PERCPU_HASH", "BPF_MAP_TYPE_PERCPU_ARRAY",
-		"BPF_MAP_TYPE_LRU_HASH", "BPF_MAP_TYPE_LRU_PERCPU_HASH", "IDENTIFIER",
-		"WS", "COMMENT", "MULTI_COMMENT",
+		"SPTR32", "SPTR64", "U32", "U64", "S32", "S64", "BEPTR32", "BEPTR64",
+		"VAR", "CONST", "CHAR", "INT", "LONG", "SHORT", "UINT", "VOID", "STRUCT",
+		"ETHHDR", "IPHDR", "TCPHDR", "UDPHDR", "FN", "RETURN", "IF", "ELSEIF",
+		"ELSE", "MAP", "BPF_MAP_TYPE_HASH", "BPF_MAP_TYPE_ARRAY", "BPF_MAP_TYPE_PERCPU_HASH",
+		"BPF_MAP_TYPE_PERCPU_ARRAY", "BPF_MAP_TYPE_LRU_HASH", "BPF_MAP_TYPE_LRU_PERCPU_HASH",
+		"IDENTIFIER", "WS", "COMMENT", "MULTI_COMMENT",
 	}
 	staticData.RuleNames = []string{
 		"type", "assign", "compare", "expression", "funcCallExpression", "structInitExpression",
@@ -66,7 +66,7 @@ func ezbpfParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 78, 274, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 80, 274, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 2, 20, 7, 20, 2,
@@ -94,8 +94,8 @@ func ezbpfParserInit() {
 		10, 23, 12, 23, 261, 9, 23, 1, 23, 5, 23, 264, 8, 23, 10, 23, 12, 23, 267,
 		9, 23, 1, 23, 4, 23, 270, 8, 23, 11, 23, 12, 23, 271, 1, 23, 0, 1, 6, 24,
 		0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36,
-		38, 40, 42, 44, 46, 0, 4, 3, 0, 42, 49, 52, 57, 75, 75, 1, 0, 20, 25, 1,
-		0, 11, 19, 1, 0, 69, 74, 289, 0, 48, 1, 0, 0, 0, 2, 50, 1, 0, 0, 0, 4,
+		38, 40, 42, 44, 46, 0, 4, 3, 0, 42, 51, 54, 59, 77, 77, 1, 0, 20, 25, 1,
+		0, 11, 19, 1, 0, 71, 76, 289, 0, 48, 1, 0, 0, 0, 2, 50, 1, 0, 0, 0, 4,
 		52, 1, 0, 0, 0, 6, 68, 1, 0, 0, 0, 8, 112, 1, 0, 0, 0, 10, 119, 1, 0, 0,
 		0, 12, 126, 1, 0, 0, 0, 14, 138, 1, 0, 0, 0, 16, 140, 1, 0, 0, 0, 18, 148,
 		1, 0, 0, 0, 20, 152, 1, 0, 0, 0, 22, 160, 1, 0, 0, 0, 24, 166, 1, 0, 0,
@@ -105,7 +105,7 @@ func ezbpfParserInit() {
 		1, 0, 0, 0, 48, 49, 7, 0, 0, 0, 49, 1, 1, 0, 0, 0, 50, 51, 7, 1, 0, 0,
 		51, 3, 1, 0, 0, 0, 52, 53, 7, 2, 0, 0, 53, 5, 1, 0, 0, 0, 54, 55, 6, 3,
 		-1, 0, 55, 69, 5, 36, 0, 0, 56, 69, 5, 37, 0, 0, 57, 69, 5, 38, 0, 0, 58,
-		69, 5, 39, 0, 0, 59, 69, 5, 40, 0, 0, 60, 69, 5, 41, 0, 0, 61, 69, 5, 75,
+		69, 5, 39, 0, 0, 59, 69, 5, 40, 0, 0, 60, 69, 5, 41, 0, 0, 61, 69, 5, 77,
 		0, 0, 62, 69, 3, 8, 4, 0, 63, 69, 3, 10, 5, 0, 64, 65, 5, 26, 0, 0, 65,
 		66, 3, 6, 3, 0, 66, 67, 5, 27, 0, 0, 67, 69, 1, 0, 0, 0, 68, 54, 1, 0,
 		0, 0, 68, 56, 1, 0, 0, 0, 68, 57, 1, 0, 0, 0, 68, 58, 1, 0, 0, 0, 68, 59,
@@ -121,50 +121,50 @@ func ezbpfParserInit() {
 		0, 95, 96, 5, 7, 0, 0, 96, 108, 3, 6, 3, 4, 97, 98, 10, 2, 0, 0, 98, 99,
 		5, 8, 0, 0, 99, 108, 3, 6, 3, 3, 100, 101, 10, 1, 0, 0, 101, 102, 3, 4,
 		2, 0, 102, 103, 3, 6, 3, 2, 103, 108, 1, 0, 0, 0, 104, 105, 10, 13, 0,
-		0, 105, 106, 5, 35, 0, 0, 106, 108, 5, 75, 0, 0, 107, 70, 1, 0, 0, 0, 107,
+		0, 105, 106, 5, 35, 0, 0, 106, 108, 5, 77, 0, 0, 107, 70, 1, 0, 0, 0, 107,
 		73, 1, 0, 0, 0, 107, 76, 1, 0, 0, 0, 107, 79, 1, 0, 0, 0, 107, 82, 1, 0,
 		0, 0, 107, 85, 1, 0, 0, 0, 107, 88, 1, 0, 0, 0, 107, 91, 1, 0, 0, 0, 107,
 		94, 1, 0, 0, 0, 107, 97, 1, 0, 0, 0, 107, 100, 1, 0, 0, 0, 107, 104, 1,
 		0, 0, 0, 108, 111, 1, 0, 0, 0, 109, 107, 1, 0, 0, 0, 109, 110, 1, 0, 0,
-		0, 110, 7, 1, 0, 0, 0, 111, 109, 1, 0, 0, 0, 112, 113, 5, 75, 0, 0, 113,
+		0, 110, 7, 1, 0, 0, 0, 111, 109, 1, 0, 0, 0, 112, 113, 5, 77, 0, 0, 113,
 		115, 5, 26, 0, 0, 114, 116, 3, 16, 8, 0, 115, 114, 1, 0, 0, 0, 115, 116,
 		1, 0, 0, 0, 116, 117, 1, 0, 0, 0, 117, 118, 5, 27, 0, 0, 118, 9, 1, 0,
-		0, 0, 119, 120, 5, 75, 0, 0, 120, 122, 5, 28, 0, 0, 121, 123, 3, 12, 6,
+		0, 0, 119, 120, 5, 77, 0, 0, 120, 122, 5, 28, 0, 0, 121, 123, 3, 12, 6,
 		0, 122, 121, 1, 0, 0, 0, 122, 123, 1, 0, 0, 0, 123, 124, 1, 0, 0, 0, 124,
-		125, 5, 29, 0, 0, 125, 11, 1, 0, 0, 0, 126, 127, 5, 75, 0, 0, 127, 128,
+		125, 5, 29, 0, 0, 125, 11, 1, 0, 0, 0, 126, 127, 5, 77, 0, 0, 127, 128,
 		5, 34, 0, 0, 128, 135, 3, 6, 3, 0, 129, 130, 5, 32, 0, 0, 130, 131, 5,
-		75, 0, 0, 131, 132, 5, 34, 0, 0, 132, 134, 3, 6, 3, 0, 133, 129, 1, 0,
+		77, 0, 0, 131, 132, 5, 34, 0, 0, 132, 134, 3, 6, 3, 0, 133, 129, 1, 0,
 		0, 0, 134, 137, 1, 0, 0, 0, 135, 133, 1, 0, 0, 0, 135, 136, 1, 0, 0, 0,
 		136, 13, 1, 0, 0, 0, 137, 135, 1, 0, 0, 0, 138, 139, 3, 6, 3, 0, 139, 15,
 		1, 0, 0, 0, 140, 145, 3, 14, 7, 0, 141, 142, 5, 32, 0, 0, 142, 144, 3,
 		14, 7, 0, 143, 141, 1, 0, 0, 0, 144, 147, 1, 0, 0, 0, 145, 143, 1, 0, 0,
 		0, 145, 146, 1, 0, 0, 0, 146, 17, 1, 0, 0, 0, 147, 145, 1, 0, 0, 0, 148,
-		149, 5, 75, 0, 0, 149, 150, 5, 34, 0, 0, 150, 151, 3, 0, 0, 0, 151, 19,
+		149, 5, 77, 0, 0, 149, 150, 5, 34, 0, 0, 150, 151, 3, 0, 0, 0, 151, 19,
 		1, 0, 0, 0, 152, 157, 3, 18, 9, 0, 153, 154, 5, 32, 0, 0, 154, 156, 3,
 		18, 9, 0, 155, 153, 1, 0, 0, 0, 156, 159, 1, 0, 0, 0, 157, 155, 1, 0, 0,
 		0, 157, 158, 1, 0, 0, 0, 158, 21, 1, 0, 0, 0, 159, 157, 1, 0, 0, 0, 160,
-		161, 5, 50, 0, 0, 161, 162, 5, 75, 0, 0, 162, 163, 5, 34, 0, 0, 163, 164,
-		3, 0, 0, 0, 164, 165, 5, 33, 0, 0, 165, 23, 1, 0, 0, 0, 166, 167, 5, 50,
-		0, 0, 167, 168, 5, 75, 0, 0, 168, 169, 5, 34, 0, 0, 169, 170, 3, 0, 0,
+		161, 5, 52, 0, 0, 161, 162, 5, 77, 0, 0, 162, 163, 5, 34, 0, 0, 163, 164,
+		3, 0, 0, 0, 164, 165, 5, 33, 0, 0, 165, 23, 1, 0, 0, 0, 166, 167, 5, 52,
+		0, 0, 167, 168, 5, 77, 0, 0, 168, 169, 5, 34, 0, 0, 169, 170, 3, 0, 0,
 		0, 170, 171, 3, 2, 1, 0, 171, 172, 3, 6, 3, 0, 172, 173, 5, 33, 0, 0, 173,
-		25, 1, 0, 0, 0, 174, 175, 5, 51, 0, 0, 175, 176, 5, 75, 0, 0, 176, 177,
+		25, 1, 0, 0, 0, 174, 175, 5, 53, 0, 0, 175, 176, 5, 77, 0, 0, 176, 177,
 		5, 34, 0, 0, 177, 178, 3, 0, 0, 0, 178, 179, 3, 2, 1, 0, 179, 180, 3, 6,
 		3, 0, 180, 181, 5, 33, 0, 0, 181, 27, 1, 0, 0, 0, 182, 183, 7, 3, 0, 0,
-		183, 29, 1, 0, 0, 0, 184, 185, 5, 68, 0, 0, 185, 186, 5, 75, 0, 0, 186,
+		183, 29, 1, 0, 0, 0, 184, 185, 5, 70, 0, 0, 185, 186, 5, 77, 0, 0, 186,
 		187, 5, 34, 0, 0, 187, 188, 3, 28, 14, 0, 188, 189, 5, 13, 0, 0, 189, 190,
 		3, 0, 0, 0, 190, 191, 5, 32, 0, 0, 191, 192, 3, 0, 0, 0, 192, 193, 5, 32,
 		0, 0, 193, 194, 5, 39, 0, 0, 194, 195, 5, 14, 0, 0, 195, 196, 5, 33, 0,
-		0, 196, 31, 1, 0, 0, 0, 197, 198, 5, 75, 0, 0, 198, 199, 5, 34, 0, 0, 199,
+		0, 196, 31, 1, 0, 0, 0, 197, 198, 5, 77, 0, 0, 198, 199, 5, 34, 0, 0, 199,
 		200, 3, 0, 0, 0, 200, 201, 5, 33, 0, 0, 201, 33, 1, 0, 0, 0, 202, 203,
-		5, 58, 0, 0, 203, 204, 5, 75, 0, 0, 204, 208, 5, 28, 0, 0, 205, 207, 3,
+		5, 60, 0, 0, 203, 204, 5, 77, 0, 0, 204, 208, 5, 28, 0, 0, 205, 207, 3,
 		32, 16, 0, 206, 205, 1, 0, 0, 0, 207, 210, 1, 0, 0, 0, 208, 206, 1, 0,
 		0, 0, 208, 209, 1, 0, 0, 0, 209, 211, 1, 0, 0, 0, 210, 208, 1, 0, 0, 0,
-		211, 212, 5, 29, 0, 0, 212, 35, 1, 0, 0, 0, 213, 214, 5, 65, 0, 0, 214,
+		211, 212, 5, 29, 0, 0, 212, 35, 1, 0, 0, 0, 213, 214, 5, 67, 0, 0, 214,
 		215, 5, 26, 0, 0, 215, 216, 3, 6, 3, 0, 216, 217, 5, 27, 0, 0, 217, 218,
 		5, 28, 0, 0, 218, 219, 3, 44, 22, 0, 219, 220, 5, 29, 0, 0, 220, 37, 1,
-		0, 0, 0, 221, 223, 5, 64, 0, 0, 222, 224, 3, 6, 3, 0, 223, 222, 1, 0, 0,
+		0, 0, 0, 221, 223, 5, 66, 0, 0, 222, 224, 3, 6, 3, 0, 223, 222, 1, 0, 0,
 		0, 223, 224, 1, 0, 0, 0, 224, 225, 1, 0, 0, 0, 225, 226, 5, 33, 0, 0, 226,
-		39, 1, 0, 0, 0, 227, 228, 5, 63, 0, 0, 228, 229, 5, 75, 0, 0, 229, 231,
+		39, 1, 0, 0, 0, 227, 228, 5, 65, 0, 0, 228, 229, 5, 77, 0, 0, 229, 231,
 		5, 26, 0, 0, 230, 232, 3, 20, 10, 0, 231, 230, 1, 0, 0, 0, 231, 232, 1,
 		0, 0, 0, 232, 233, 1, 0, 0, 0, 233, 234, 5, 27, 0, 0, 234, 235, 5, 34,
 		0, 0, 235, 236, 3, 0, 0, 0, 236, 237, 5, 28, 0, 0, 237, 238, 3, 44, 22,
@@ -271,35 +271,37 @@ const (
 	ezbpfParserU64                          = 47
 	ezbpfParserS32                          = 48
 	ezbpfParserS64                          = 49
-	ezbpfParserVAR                          = 50
-	ezbpfParserCONST                        = 51
-	ezbpfParserCHAR                         = 52
-	ezbpfParserINT                          = 53
-	ezbpfParserLONG                         = 54
-	ezbpfParserSHORT                        = 55
-	ezbpfParserUINT                         = 56
-	ezbpfParserVOID                         = 57
-	ezbpfParserSTRUCT                       = 58
-	ezbpfParserETHHDR                       = 59
-	ezbpfParserIPHDR                        = 60
-	ezbpfParserTCPHDR                       = 61
-	ezbpfParserUDPHDR                       = 62
-	ezbpfParserFN                           = 63
-	ezbpfParserRETURN                       = 64
-	ezbpfParserIF                           = 65
-	ezbpfParserELSEIF                       = 66
-	ezbpfParserELSE                         = 67
-	ezbpfParserMAP                          = 68
-	ezbpfParserBPF_MAP_TYPE_HASH            = 69
-	ezbpfParserBPF_MAP_TYPE_ARRAY           = 70
-	ezbpfParserBPF_MAP_TYPE_PERCPU_HASH     = 71
-	ezbpfParserBPF_MAP_TYPE_PERCPU_ARRAY    = 72
-	ezbpfParserBPF_MAP_TYPE_LRU_HASH        = 73
-	ezbpfParserBPF_MAP_TYPE_LRU_PERCPU_HASH = 74
-	ezbpfParserIDENTIFIER                   = 75
-	ezbpfParserWS                           = 76
-	ezbpfParserCOMMENT                      = 77
-	ezbpfParserMULTI_COMMENT                = 78
+	ezbpfParserBEPTR32                      = 50
+	ezbpfParserBEPTR64                      = 51
+	ezbpfParserVAR                          = 52
+	ezbpfParserCONST                        = 53
+	ezbpfParserCHAR                         = 54
+	ezbpfParserINT                          = 55
+	ezbpfParserLONG                         = 56
+	ezbpfParserSHORT                        = 57
+	ezbpfParserUINT                         = 58
+	ezbpfParserVOID                         = 59
+	ezbpfParserSTRUCT                       = 60
+	ezbpfParserETHHDR                       = 61
+	ezbpfParserIPHDR                        = 62
+	ezbpfParserTCPHDR                       = 63
+	ezbpfParserUDPHDR                       = 64
+	ezbpfParserFN                           = 65
+	ezbpfParserRETURN                       = 66
+	ezbpfParserIF                           = 67
+	ezbpfParserELSEIF                       = 68
+	ezbpfParserELSE                         = 69
+	ezbpfParserMAP                          = 70
+	ezbpfParserBPF_MAP_TYPE_HASH            = 71
+	ezbpfParserBPF_MAP_TYPE_ARRAY           = 72
+	ezbpfParserBPF_MAP_TYPE_PERCPU_HASH     = 73
+	ezbpfParserBPF_MAP_TYPE_PERCPU_ARRAY    = 74
+	ezbpfParserBPF_MAP_TYPE_LRU_HASH        = 75
+	ezbpfParserBPF_MAP_TYPE_LRU_PERCPU_HASH = 76
+	ezbpfParserIDENTIFIER                   = 77
+	ezbpfParserWS                           = 78
+	ezbpfParserCOMMENT                      = 79
+	ezbpfParserMULTI_COMMENT                = 80
 )
 
 // ezbpfParser rules.
@@ -342,6 +344,8 @@ type ITypeContext interface {
 	U64() antlr.TerminalNode
 	UPTR32() antlr.TerminalNode
 	UPTR64() antlr.TerminalNode
+	BEPTR32() antlr.TerminalNode
+	BEPTR64() antlr.TerminalNode
 	S32() antlr.TerminalNode
 	S64() antlr.TerminalNode
 	SPTR32() antlr.TerminalNode
@@ -404,6 +408,14 @@ func (s *TypeContext) UPTR32() antlr.TerminalNode {
 
 func (s *TypeContext) UPTR64() antlr.TerminalNode {
 	return s.GetToken(ezbpfParserUPTR64, 0)
+}
+
+func (s *TypeContext) BEPTR32() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserBEPTR32, 0)
+}
+
+func (s *TypeContext) BEPTR64() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserBEPTR64, 0)
 }
 
 func (s *TypeContext) S32() antlr.TerminalNode {
@@ -478,7 +490,7 @@ func (p *ezbpfParser) Type_() (localctx ITypeContext) {
 		p.SetState(48)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64((_la-42)) & ^0x3f) == 0 && ((int64(1)<<(_la-42))&8589999359) != 0) {
+		if !((int64((_la-42)) & ^0x3f) == 0 && ((int64(1)<<(_la-42))&34359997439) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -2648,7 +2660,7 @@ func (p *ezbpfParser) FuncCallExpression() (localctx IFuncCallExpressionContext)
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	if (int64((_la-26)) & ^0x3f) == 0 && ((int64(1)<<(_la-26))&562949953485825) != 0 {
+	if (int64((_la-26)) & ^0x3f) == 0 && ((int64(1)<<(_la-26))&2251799813749761) != 0 {
 		{
 			p.SetState(114)
 			p.Args()
@@ -4265,7 +4277,7 @@ func (p *ezbpfParser) MapType() (localctx IMapTypeContext) {
 		p.SetState(182)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64((_la-69)) & ^0x3f) == 0 && ((int64(1)<<(_la-69))&63) != 0) {
+		if !((int64((_la-71)) & ^0x3f) == 0 && ((int64(1)<<(_la-71))&63) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -5194,7 +5206,7 @@ func (p *ezbpfParser) ReturnStmt() (localctx IReturnStmtContext) {
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	if (int64((_la-26)) & ^0x3f) == 0 && ((int64(1)<<(_la-26))&562949953485825) != 0 {
+	if (int64((_la-26)) & ^0x3f) == 0 && ((int64(1)<<(_la-26))&2251799813749761) != 0 {
 		{
 			p.SetState(222)
 			p.expression(0)
@@ -5871,7 +5883,7 @@ func (p *ezbpfParser) Stmts() (localctx IStmtsContext) {
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for (int64((_la-50)) & ^0x3f) == 0 && ((int64(1)<<(_la-50))&319747) != 0 {
+	for (int64((_la-52)) & ^0x3f) == 0 && ((int64(1)<<(_la-52))&319747) != 0 {
 		{
 			p.SetState(250)
 			p.Stmt()

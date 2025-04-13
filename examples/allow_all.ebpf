@@ -1,5 +1,5 @@
 // Main XDP program to allow all packets
-SEC("xdp") fn allow_all_packets(ctx: xdp_md*) : u32 {
+fn allow_all_packets(ctx: xdp_md) : int {
     // Return XDP_PASS to allow the packet
     return XDP_PASS;
 }

@@ -15,7 +15,7 @@ fn new(): int {
 	var j: long = i + 10;
 	var k: __u32 = j * j + 10;
 
-	var g: foo = foo{};
+	var g: foo = foo{bar: 0, cat: 0};
 	var f: foo = Foo();
 	return f;
 }

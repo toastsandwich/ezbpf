@@ -18,9 +18,6 @@ type C struct {
 }
 
 func (c *C) Visit(tree antlr.ParseTree) any {
-	color.Green("-----------------------\n")
-	color.Yellow(fmt.Sprintf("visiting %T\n", tree))
-
 	return tree.Accept(c)
 }
 
@@ -37,7 +34,21 @@ func (c *C) Indent() string { return strings.Repeat("\t", c.indent) }
 func (c *C) VisitType(ctx *grammar.TypeContext) any {
 	switch {
 	case ctx.IDENTIFIER() != nil:
-		return "struct " + ctx.IDENTIFIER().GetText()
+		v := ctx.IDENTIFIER().GetText()
+		switch {
+		case v == "xdp_md":
+			return ("struct xdp_md *")
+		default:
+			return "struct " + ctx.IDENTIFIER().GetText()
+		}
+	case ctx.ETHHDR() != nil:
+		return "struct ethhdr *"
+	case ctx.IPHDR() != nil:
+		return "struct iphdr *"
+	case ctx.UDPHDR() != nil:
+		return "struct udphdr *"
+	case ctx.TCPHDR() != nil:
+		return "struct tcphdr *"
 	default:
 		return ctx.GetText()
 	}
@@ -177,8 +188,9 @@ func (c *C) VisitParams(ctx *grammar.ParamsContext) any {
 }
 
 func (c *C) VisitAddExpression(ctx *grammar.AddExpressionContext) any {
-	exprs := ctx.AllExpression()
-	return fmt.Sprintf("%s + %s", exprs[0].GetText(), exprs[1].GetText())
+	first := c.Visit(ctx.Expression(0)).(string)
+	second := c.Visit(ctx.Expression(1)).(string)
+	return fmt.Sprintf("%s + %s", first, second)
 }
 
 func (c *C) VisitSubExpression(ctx *grammar.SubExpressionContext) any {

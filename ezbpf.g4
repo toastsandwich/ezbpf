@@ -74,18 +74,22 @@ BPF_MAP_TYPE_PERCPU_ARRAY: 'BPF_MAP_TYPE_PERCPU_ARRAY' ;
 BPF_MAP_TYPE_LRU_HASH: 'BPF_MAP_TYPE_LRU_HASH' ;
 BPF_MAP_TYPE_LRU_PERCPU_HASH: 'BPF_MAP_TYPE_LRU_PERCPU_HASH' ;
 
+
+
 // Identifier
 IDENTIFIER: ID_START ID_PART* ;
+
+
+// Parser rules
+type: U32 | U64 | UPTR32 | UPTR64 | BEPTR32 | BEPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | SHORT | LONG | UINT | INT | VOID | ETHHDR | IPHDR | TCPHDR | UDPHDR | IDENTIFIER;
+assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
+compare: EQ | NEQ | GT | LT | GTE | LTE | AND | OR | NOT;
 
 // Whitespace & Comments
 WS: [ \t\r\n]+ -> skip ;
 COMMENT: '//' ~[\r\n]* -> skip ;
 MULTI_COMMENT: '/*' ~[*]* '*/' -> skip ;
 
-// Parser rules
-type: U32 | U64 | UPTR32 | UPTR64 | BEPTR32 | BEPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | SHORT | LONG | UINT | INT | VOID | IDENTIFIER;
-assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
-compare: EQ | NEQ | GT | LT | GTE | LTE | AND | OR | NOT;
 
 expression
 	: HEX_LITERAL #hexLiteralExpression
@@ -143,4 +147,3 @@ stmt: varInitStmt | varDeclStmt | constDeclStmt | mapDeclStmt | structDeclStmt |
 stmts: stmt* ;
 
 prog: structDeclStmt* mapDeclStmt* funcDeclStmt+ ;
-

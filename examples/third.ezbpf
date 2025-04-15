@@ -3,7 +3,7 @@ struct data_t {
 	src__port: __u64;
 }
 
-map my_map BPF_MAP_TYPE_HASH<__u32, __u64, 1024> ;
+map my_map: BPF_MAP_TYPE_HASH<__u32, __u64, 1024> ;
 
 fn add(a: int, b: int): int {
 	return a + b;
@@ -11,10 +11,10 @@ fn add(a: int, b: int): int {
 
 fn all_pass(): int {
 	var a: int = 10;
+	var r: ethhdr = 100;
 	if (a == 10) {
 		return 1;
 	}
-	return 0;
+	var b: int = a + add(10, a);
+	return b;
 }
-
-// write me an ebpf code where you pass all packets.

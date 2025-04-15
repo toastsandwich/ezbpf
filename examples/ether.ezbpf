@@ -1,0 +1,4 @@
+fn eth(ctx: xdp_md) : int {
+  var eth: ethhdr = get_eth();
+  return XDP_PASS;
+}

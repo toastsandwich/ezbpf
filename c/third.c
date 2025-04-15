@@ -24,11 +24,13 @@ int add(int a,int b) {
 
 int all_pass() {
 	int a = 10;
+struct ethhdr * r = 100;
 
 if (a == 10) {
 	return 1;
 }
 
-return 0;
+int b = a + add(10,a);;
+return b;
 }
 

@@ -5,7 +5,7 @@
 #include <linux/udp.h>
 #include <bpf/bpf_helpers.h>
 
-int allow_all_packets(struct xdp_md ctx) {
+int allow_all_packets(struct xdp_md * ctx) {
 	return XDP_PASS;
 }
 

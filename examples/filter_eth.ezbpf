@@ -1,0 +1,17 @@
+fn filter_map(ctx: xdp_md): int {
+	var data: void = __data(ctx.data);
+	var data_end: void = __data(ctx.data);
+	var eth: ethhdr = __get_ethhdr(data);
+
+	var target: uchar[6] = [0x11, 0x22, 0x33, 0x44, 0x55, 0x66];
+	if (__copy(eth.h_source, target, 6) == 0) {
+		return XDP_DROP;
+	}
+
+	var iph: iphdr = __get_iphdr(eth);
+	
+	if (__ntohl(iph.src_ip) != 0xAB12CFDA) {
+		return XDP_DROP;
+	}
+	return XDP_PASS;
+}

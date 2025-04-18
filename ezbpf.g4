@@ -57,7 +57,7 @@ STRING_LITERAL: '"' (ESC | ~["\\])* '"' ;
 // Data types
 UPTR32: '__u32' ; UPTR64: '__u64' ; SPTR32: '__s32' ; SPTR64: '__s64' ;
 U32: 'u32' ; U64: 'u64' ; S32: 's32' ; S64: 's64' ; BEPTR32: '__be32' ; BEPTR64: '__be64' ;
-VAR: 'var' ; CONST: 'const' ; CHAR: 'char' ; INT: 'int' ;
+VAR: 'var' ; CONST: 'const' ; CHAR: 'char'; UCHAR: 'uchar' ; INT: 'int' ;
 LONG: 'long' ; SHORT: 'short' ; UINT: 'uint' ; VOID: 'void' ;
 STRUCT: 'struct' ; ETHHDR: 'ethhdr'; IPHDR: 'iphdr'; TCPHDR: 'tcphdr'; UDPHDR:'udphdr';
 
@@ -81,7 +81,9 @@ IDENTIFIER: ID_START ID_PART* ;
 
 
 // Parser rules
-type: U32 | U64 | UPTR32 | UPTR64 | BEPTR32 | BEPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | SHORT | LONG | UINT | INT | VOID | ETHHDR | IPHDR | TCPHDR | UDPHDR | IDENTIFIER;
+baseType: U32 | U64 | UPTR32 | UPTR64 | BEPTR32 | BEPTR64 | S32 | S64 | SPTR32 | SPTR64 | CHAR | UCHAR | SHORT | LONG | UINT | INT | VOID | ETHHDR | IPHDR | TCPHDR | UDPHDR | IDENTIFIER;
+
+type: baseType (LSQ DEC_LITERAL RSQ)? ;
 assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
 compare: EQ | NEQ | GT | LT | GTE | LTE | AND | OR | NOT;
 
@@ -103,6 +105,8 @@ expression
     | structInitExpression #structinitExpression
     | expression DOT IDENTIFIER #dotExpression
     | LPAR expression RPAR #parExpression
+	| expression LSQ expression RSQ #indexExpression     
+    | LSQ expression (COMMA expression)* RSQ #arrayLiteralExpression
     | expression MUL expression #mulExpression
     | expression DIV expression #divExpression
     | expression MOD expression #modExpression
@@ -141,8 +145,8 @@ structDeclStmt: STRUCT IDENTIFIER LBRA structDataMemStmt* RBRA ;
 ifStmt: IF LPAR expression RPAR LBRA stmts RBRA ;
 returnStmt: RETURN expression? SEMI ;
 funcDeclStmt: FN IDENTIFIER LPAR params? RPAR COLON type LBRA stmts RBRA;
-
-stmt: varInitStmt | varDeclStmt | constDeclStmt | mapDeclStmt | structDeclStmt | ifStmt | returnStmt | funcDeclStmt ;
+funcCallStmt: funcCallExpression SEMI ;
+stmt: varInitStmt | varDeclStmt | constDeclStmt | mapDeclStmt | structDeclStmt | ifStmt | returnStmt | funcDeclStmt | funcCallStmt ;
 
 stmts: stmt* ;
 

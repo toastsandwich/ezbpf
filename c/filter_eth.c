@@ -1,0 +1,26 @@
+#include <linux/bpf.h>
+#include <linux/if_ether.h>
+#include <linux/ip.h>
+#include <linux/tcp.h>
+#include <linux/udp.h>
+#include <bpf/bpf_helpers.h>
+
+int filter_map(struct xdp_md * ctx) {
+	void * data = (void *)(long)(ctx.data);
+void * data_end = (void *)(long)(ctx.data);
+struct ethhdr * eth = (struct ethhdr *)(data);
+unsigned char[6] target = {0x11,0x22,0x33,0x44,0x55,0x66};
+
+if (__builtin_memcpy(eth.h_source,target,6) == 0) {
+	return XDP_DROP;
+}
+
+struct iphdr * iph = (struct iphdr *)(eth);
+
+if (bpf_ntohl(iph.src_ip) != 0xAB12CFDA) {
+	return XDP_DROP;
+}
+
+return XDP_PASS;
+}
+

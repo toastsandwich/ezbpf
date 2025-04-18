@@ -2,7 +2,6 @@ package compiler
 
 import (
 	"fmt"
-	"log"
 	"runtime/debug"
 	"strings"
 
@@ -18,6 +17,9 @@ type C struct {
 }
 
 func (c *C) Visit(tree antlr.ParseTree) any {
+	color.Green("-----------------------\n")
+	color.Yellow(fmt.Sprintf("visiting %T\n", tree))
+
 	return tree.Accept(c)
 }
 
@@ -31,7 +33,8 @@ func (c *C) PopIndent() {
 
 func (c *C) Indent() string { return strings.Repeat("\t", c.indent) }
 
-func (c *C) VisitType(ctx *grammar.TypeContext) any {
+func (c *C) VisitBaseType(ctx *grammar.BaseTypeContext) any {
+
 	switch {
 	case ctx.IDENTIFIER() != nil:
 		v := ctx.IDENTIFIER().GetText()
@@ -41,6 +44,8 @@ func (c *C) VisitType(ctx *grammar.TypeContext) any {
 		default:
 			return "struct " + ctx.IDENTIFIER().GetText()
 		}
+	case ctx.VOID() != nil:
+		return "void *"
 	case ctx.ETHHDR() != nil:
 		return "struct ethhdr *"
 	case ctx.IPHDR() != nil:
@@ -49,9 +54,20 @@ func (c *C) VisitType(ctx *grammar.TypeContext) any {
 		return "struct udphdr *"
 	case ctx.TCPHDR() != nil:
 		return "struct tcphdr *"
+	case ctx.UCHAR() != nil:
+		return "unsigned char"
 	default:
 		return ctx.GetText()
 	}
+}
+
+func (c *C) VisitType(ctx *grammar.TypeContext) any {
+	baseType := c.Visit(ctx.BaseType()).(string)
+	if ctx.DEC_LITERAL() != nil {
+		size := ctx.DEC_LITERAL().GetText()
+		return fmt.Sprintf("%s[%s]", baseType, size)
+	}
+	return baseType
 }
 
 func (c *C) VisitAssign(ctx *grammar.AssignContext) any {
@@ -112,22 +128,73 @@ func (c *C) VisitHexLiteralExpression(ctx *grammar.HexLiteralExpressionContext) 
 	return ctx.GetText()
 }
 
+func (c *C) VisitArrayLiteralExpression(ctx *grammar.ArrayLiteralExpressionContext) any {
+	all := []string{}
+	for _, e := range ctx.AllExpression() {
+		a := c.Visit(e).(string)
+		all = append(all, a)
+	}
+	return fmt.Sprintf("{%s}", strings.Join(all, ","))
+}
+
+func (c *C) VisitIndexExpression(ctx *grammar.IndexExpressionContext) any {
+	name := c.Visit(ctx.Expression(0)).(string)
+	idx := c.Visit(ctx.Expression(1)).(string)
+	return fmt.Sprintf("%s[%s]", name, idx)
+}
+
 func (c *C) VisitFuncCallExpression(ctx *grammar.FuncCallExpressionContext) any {
 	var args string
-	ident := ctx.IDENTIFIER().GetText()
+	var identifier string
+
 	if ctx.Args() != nil {
 		args = c.Visit(ctx.Args()).(string)
 	}
-	return fmt.Sprintf("%s(%s);", ident, args)
+
+	if iDENTIFIER := ctx.IDENTIFIER(); iDENTIFIER != nil {
+		idnt := iDENTIFIER.GetText()
+		switch {
+		case idnt == "__tprint":
+			identifier = "bpf_trace_printk"
+		case idnt == "__print":
+			identifier = "bpf_printk"
+		case idnt == "__lookup":
+			identifier = "bpf_map_lookup_elem"
+		case idnt == "__update":
+			identifier = "bpf_map_update_elem"
+		case idnt == "__delete":
+			identifier = "bpf_map_delete_elem"
+		case idnt == "__copy":
+			identifier = "__builtin_memcpy"
+		case idnt == "__data":
+			identifier = "(void *)(long)"
+		case idnt == "__get_ethhdr":
+			identifier = "(struct ethhdr *)"
+		case idnt == "__get_iphdr":
+			identifier = "(struct iphdr *)"
+		case idnt == "__get_tcphdr":
+			identifier = "(struct tcphdr *)"
+		case idnt == "__ntohs":
+			identifier = "bpf_ntohs"
+		case idnt == "__ntohl":
+			identifier = "bpf_ntohl"
+		case idnt == "__htons":
+			identifier = "bpf_htons"
+		case idnt == "__htonl":
+			identifier = "bpf_htonl"
+		default:
+			identifier = iDENTIFIER.GetText()
+		}
+	}
+	return fmt.Sprintf("%s(%s)", identifier, args)
 }
 
 func (c *C) VisitFunccallExpression(ctx *grammar.FunccallExpressionContext) any {
 	return c.Visit(ctx.FuncCallExpression())
 }
 
-func (c *C) VisitStructFieldAssignExpression(ctx *grammar.StructFieldAssignContext) any {
+func (c *C) VisitStructFieldAssign(ctx *grammar.StructFieldAssignContext) any {
 	exprs := []string{}
-	log.Fatal(ctx.GetText())
 	for _, e := range ctx.AllExpression() {
 		var expr string
 		var ok bool
@@ -138,7 +205,7 @@ func (c *C) VisitStructFieldAssignExpression(ctx *grammar.StructFieldAssignConte
 	return strings.Join(exprs, ",")
 }
 
-func (c *C) VisitStringInitExpression(ctx *grammar.StructInitExpressionContext) any {
+func (c *C) VisitStructInitExpression(ctx *grammar.StructInitExpressionContext) any {
 	return c.Visit(ctx.StructFieldAssign())
 }
 
@@ -215,7 +282,7 @@ func (c *C) VisitModExpression(ctx *grammar.ModExpressionContext) any {
 }
 
 func (c *C) VisitDotExpression(ctx *grammar.DotExpressionContext) any {
-	expr := ctx.Expression().GetText()
+	expr := c.Visit(ctx.Expression()).(string)
 	idnt := ctx.IDENTIFIER().GetText()
 	return expr + "." + idnt
 }
@@ -350,6 +417,8 @@ func (c *C) VisitStmt(ctx *grammar.StmtContext) any {
 		return c.Visit(ctx.ReturnStmt())
 	case ctx.FuncDeclStmt() != nil:
 		return c.Visit(ctx.FuncDeclStmt())
+	case ctx.FuncCallStmt() != nil:
+		return c.Visit(ctx.FuncCallStmt())
 	default:
 		fmt.Println("return nil")
 		return nil
@@ -398,6 +467,11 @@ func (c *C) VisitFuncDeclStmt(ctx *grammar.FuncDeclStmtContext) any {
 	)
 }
 
+func (c *C) VisitFuncCallStmt(ctx *grammar.FuncCallStmtContext) any {
+	funcCall := c.Visit(ctx.FuncCallExpression()).(string)
+	return funcCall + ";"
+}
+
 func (c *C) VisitProg(ctx *grammar.ProgContext) any {
 	for _, sd := range ctx.AllStructDeclStmt() {
 		s := c.Visit(sd).(string)
@@ -438,6 +512,10 @@ func (c *C) Compile(prog grammar.IProgContext) string {
 		return code
 	}
 	return "empty"
+}
+
+func (c *C) indentLine(stmt, ident string) string {
+	return ""
 }
 
 func (c *C) LoadHeaders() {

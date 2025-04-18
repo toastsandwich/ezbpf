@@ -17,6 +17,7 @@ fn new(): int {
 
 	var g: foo = foo{bar: 0, cat: 0};
 	var f: foo = Foo();
+	__update(m, k, j, BPF_ANY);
 	return f;
 }
 

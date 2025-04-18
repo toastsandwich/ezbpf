@@ -7,6 +7,10 @@ type BaseezbpfVisitor struct {
 	*antlr.BaseParseTreeVisitor
 }
 
+func (v *BaseezbpfVisitor) VisitBaseType(ctx *BaseTypeContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseezbpfVisitor) VisitType(ctx *TypeContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -67,6 +71,10 @@ func (v *BaseezbpfVisitor) VisitCompareExpression(ctx *CompareExpressionContext)
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseezbpfVisitor) VisitArrayLiteralExpression(ctx *ArrayLiteralExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseezbpfVisitor) VisitAddExpression(ctx *AddExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -88,6 +96,10 @@ func (v *BaseezbpfVisitor) VisitCharLiteralExpression(ctx *CharLiteralExpression
 }
 
 func (v *BaseezbpfVisitor) VisitRshiftExpression(ctx *RshiftExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseezbpfVisitor) VisitIndexExpression(ctx *IndexExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -172,6 +184,10 @@ func (v *BaseezbpfVisitor) VisitReturnStmt(ctx *ReturnStmtContext) interface{} {
 }
 
 func (v *BaseezbpfVisitor) VisitFuncDeclStmt(ctx *FuncDeclStmtContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseezbpfVisitor) VisitFuncCallStmt(ctx *FuncCallStmtContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

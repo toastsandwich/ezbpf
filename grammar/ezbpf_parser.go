@@ -38,10 +38,11 @@ func ezbpfParserInit() {
 		"'{'", "'}'", "'['", "']'", "','", "';'", "':'", "'.'", "", "", "",
 		"", "", "", "'__u32'", "'__u64'", "'__s32'", "'__s64'", "'u32'", "'u64'",
 		"'s32'", "'s64'", "'__be32'", "'__be64'", "'var'", "'const'", "'char'",
-		"'int'", "'long'", "'short'", "'uint'", "'void'", "'struct'", "'ethhdr'",
-		"'iphdr'", "'tcphdr'", "'udphdr'", "'fn'", "'return'", "'if'", "'elif'",
-		"'else'", "'map'", "'BPF_MAP_TYPE_HASH'", "'BPF_MAP_TYPE_ARRAY'", "'BPF_MAP_TYPE_PERCPU_HASH'",
-		"'BPF_MAP_TYPE_PERCPU_ARRAY'", "'BPF_MAP_TYPE_LRU_HASH'", "'BPF_MAP_TYPE_LRU_PERCPU_HASH'",
+		"'uchar'", "'int'", "'long'", "'short'", "'uint'", "'void'", "'struct'",
+		"'ethhdr'", "'iphdr'", "'tcphdr'", "'udphdr'", "'fn'", "'return'", "'if'",
+		"'elif'", "'else'", "'map'", "'BPF_MAP_TYPE_HASH'", "'BPF_MAP_TYPE_ARRAY'",
+		"'BPF_MAP_TYPE_PERCPU_HASH'", "'BPF_MAP_TYPE_PERCPU_ARRAY'", "'BPF_MAP_TYPE_LRU_HASH'",
+		"'BPF_MAP_TYPE_LRU_PERCPU_HASH'",
 	}
 	staticData.SymbolicNames = []string{
 		"", "ADD", "SUB", "MUL", "DIV", "MOD", "BIT_AND", "BIT_OR", "BIT_XOR",
@@ -51,139 +52,153 @@ func ezbpfParserInit() {
 		"SEMI", "COLON", "DOT", "HEX_LITERAL", "OCT_LITERAL", "BIN_LITERAL",
 		"DEC_LITERAL", "CHAR_LITERAL", "STRING_LITERAL", "UPTR32", "UPTR64",
 		"SPTR32", "SPTR64", "U32", "U64", "S32", "S64", "BEPTR32", "BEPTR64",
-		"VAR", "CONST", "CHAR", "INT", "LONG", "SHORT", "UINT", "VOID", "STRUCT",
-		"ETHHDR", "IPHDR", "TCPHDR", "UDPHDR", "FN", "RETURN", "IF", "ELSEIF",
-		"ELSE", "MAP", "BPF_MAP_TYPE_HASH", "BPF_MAP_TYPE_ARRAY", "BPF_MAP_TYPE_PERCPU_HASH",
-		"BPF_MAP_TYPE_PERCPU_ARRAY", "BPF_MAP_TYPE_LRU_HASH", "BPF_MAP_TYPE_LRU_PERCPU_HASH",
-		"IDENTIFIER", "WS", "COMMENT", "MULTI_COMMENT",
+		"VAR", "CONST", "CHAR", "UCHAR", "INT", "LONG", "SHORT", "UINT", "VOID",
+		"STRUCT", "ETHHDR", "IPHDR", "TCPHDR", "UDPHDR", "FN", "RETURN", "IF",
+		"ELSEIF", "ELSE", "MAP", "BPF_MAP_TYPE_HASH", "BPF_MAP_TYPE_ARRAY",
+		"BPF_MAP_TYPE_PERCPU_HASH", "BPF_MAP_TYPE_PERCPU_ARRAY", "BPF_MAP_TYPE_LRU_HASH",
+		"BPF_MAP_TYPE_LRU_PERCPU_HASH", "IDENTIFIER", "WS", "COMMENT", "MULTI_COMMENT",
 	}
 	staticData.RuleNames = []string{
-		"type", "assign", "compare", "expression", "funcCallExpression", "structInitExpression",
-		"structFieldAssign", "arg", "args", "param", "params", "varInitStmt",
-		"varDeclStmt", "constDeclStmt", "mapType", "mapDeclStmt", "structDataMemStmt",
-		"structDeclStmt", "ifStmt", "returnStmt", "funcDeclStmt", "stmt", "stmts",
-		"prog",
+		"baseType", "type", "assign", "compare", "expression", "funcCallExpression",
+		"structInitExpression", "structFieldAssign", "arg", "args", "param",
+		"params", "varInitStmt", "varDeclStmt", "constDeclStmt", "mapType",
+		"mapDeclStmt", "structDataMemStmt", "structDeclStmt", "ifStmt", "returnStmt",
+		"funcDeclStmt", "funcCallStmt", "stmt", "stmts", "prog",
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 80, 274, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 81, 304, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 2, 20, 7, 20, 2,
-		21, 7, 21, 2, 22, 7, 22, 2, 23, 7, 23, 1, 0, 1, 0, 1, 1, 1, 1, 1, 2, 1,
-		2, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1,
-		3, 1, 3, 1, 3, 3, 3, 69, 8, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3,
-		1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3,
-		1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3,
-		1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 5, 3, 108, 8, 3, 10, 3, 12, 3, 111,
-		9, 3, 1, 4, 1, 4, 1, 4, 3, 4, 116, 8, 4, 1, 4, 1, 4, 1, 5, 1, 5, 1, 5,
-		3, 5, 123, 8, 5, 1, 5, 1, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6,
-		5, 6, 134, 8, 6, 10, 6, 12, 6, 137, 9, 6, 1, 7, 1, 7, 1, 8, 1, 8, 1, 8,
-		5, 8, 144, 8, 8, 10, 8, 12, 8, 147, 9, 8, 1, 9, 1, 9, 1, 9, 1, 9, 1, 10,
-		1, 10, 1, 10, 5, 10, 156, 8, 10, 10, 10, 12, 10, 159, 9, 10, 1, 11, 1,
-		11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12,
-		1, 12, 1, 12, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1,
-		14, 1, 14, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15,
-		1, 15, 1, 15, 1, 15, 1, 15, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 17, 1,
-		17, 1, 17, 1, 17, 5, 17, 207, 8, 17, 10, 17, 12, 17, 210, 9, 17, 1, 17,
-		1, 17, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 19, 1,
-		19, 3, 19, 224, 8, 19, 1, 19, 1, 19, 1, 20, 1, 20, 1, 20, 1, 20, 3, 20,
-		232, 8, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 1, 21, 1,
-		21, 1, 21, 1, 21, 1, 21, 1, 21, 1, 21, 1, 21, 3, 21, 249, 8, 21, 1, 22,
-		5, 22, 252, 8, 22, 10, 22, 12, 22, 255, 9, 22, 1, 23, 5, 23, 258, 8, 23,
-		10, 23, 12, 23, 261, 9, 23, 1, 23, 5, 23, 264, 8, 23, 10, 23, 12, 23, 267,
-		9, 23, 1, 23, 4, 23, 270, 8, 23, 11, 23, 12, 23, 271, 1, 23, 0, 1, 6, 24,
-		0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36,
-		38, 40, 42, 44, 46, 0, 4, 4, 0, 42, 51, 54, 59, 61, 64, 77, 77, 1, 0, 20,
-		25, 1, 0, 11, 19, 1, 0, 71, 76, 289, 0, 48, 1, 0, 0, 0, 2, 50, 1, 0, 0,
-		0, 4, 52, 1, 0, 0, 0, 6, 68, 1, 0, 0, 0, 8, 112, 1, 0, 0, 0, 10, 119, 1,
-		0, 0, 0, 12, 126, 1, 0, 0, 0, 14, 138, 1, 0, 0, 0, 16, 140, 1, 0, 0, 0,
-		18, 148, 1, 0, 0, 0, 20, 152, 1, 0, 0, 0, 22, 160, 1, 0, 0, 0, 24, 166,
-		1, 0, 0, 0, 26, 174, 1, 0, 0, 0, 28, 182, 1, 0, 0, 0, 30, 184, 1, 0, 0,
-		0, 32, 197, 1, 0, 0, 0, 34, 202, 1, 0, 0, 0, 36, 213, 1, 0, 0, 0, 38, 221,
-		1, 0, 0, 0, 40, 227, 1, 0, 0, 0, 42, 248, 1, 0, 0, 0, 44, 253, 1, 0, 0,
-		0, 46, 259, 1, 0, 0, 0, 48, 49, 7, 0, 0, 0, 49, 1, 1, 0, 0, 0, 50, 51,
-		7, 1, 0, 0, 51, 3, 1, 0, 0, 0, 52, 53, 7, 2, 0, 0, 53, 5, 1, 0, 0, 0, 54,
-		55, 6, 3, -1, 0, 55, 69, 5, 36, 0, 0, 56, 69, 5, 37, 0, 0, 57, 69, 5, 38,
-		0, 0, 58, 69, 5, 39, 0, 0, 59, 69, 5, 40, 0, 0, 60, 69, 5, 41, 0, 0, 61,
-		69, 5, 77, 0, 0, 62, 69, 3, 8, 4, 0, 63, 69, 3, 10, 5, 0, 64, 65, 5, 26,
-		0, 0, 65, 66, 3, 6, 3, 0, 66, 67, 5, 27, 0, 0, 67, 69, 1, 0, 0, 0, 68,
-		54, 1, 0, 0, 0, 68, 56, 1, 0, 0, 0, 68, 57, 1, 0, 0, 0, 68, 58, 1, 0, 0,
-		0, 68, 59, 1, 0, 0, 0, 68, 60, 1, 0, 0, 0, 68, 61, 1, 0, 0, 0, 68, 62,
-		1, 0, 0, 0, 68, 63, 1, 0, 0, 0, 68, 64, 1, 0, 0, 0, 69, 109, 1, 0, 0, 0,
-		70, 71, 10, 11, 0, 0, 71, 72, 5, 3, 0, 0, 72, 108, 3, 6, 3, 12, 73, 74,
-		10, 10, 0, 0, 74, 75, 5, 4, 0, 0, 75, 108, 3, 6, 3, 11, 76, 77, 10, 9,
-		0, 0, 77, 78, 5, 5, 0, 0, 78, 108, 3, 6, 3, 10, 79, 80, 10, 8, 0, 0, 80,
-		81, 5, 1, 0, 0, 81, 108, 3, 6, 3, 9, 82, 83, 10, 7, 0, 0, 83, 84, 5, 2,
-		0, 0, 84, 108, 3, 6, 3, 8, 85, 86, 10, 6, 0, 0, 86, 87, 5, 9, 0, 0, 87,
-		108, 3, 6, 3, 7, 88, 89, 10, 5, 0, 0, 89, 90, 5, 10, 0, 0, 90, 108, 3,
-		6, 3, 6, 91, 92, 10, 4, 0, 0, 92, 93, 5, 6, 0, 0, 93, 108, 3, 6, 3, 5,
-		94, 95, 10, 3, 0, 0, 95, 96, 5, 7, 0, 0, 96, 108, 3, 6, 3, 4, 97, 98, 10,
-		2, 0, 0, 98, 99, 5, 8, 0, 0, 99, 108, 3, 6, 3, 3, 100, 101, 10, 1, 0, 0,
-		101, 102, 3, 4, 2, 0, 102, 103, 3, 6, 3, 2, 103, 108, 1, 0, 0, 0, 104,
-		105, 10, 13, 0, 0, 105, 106, 5, 35, 0, 0, 106, 108, 5, 77, 0, 0, 107, 70,
-		1, 0, 0, 0, 107, 73, 1, 0, 0, 0, 107, 76, 1, 0, 0, 0, 107, 79, 1, 0, 0,
-		0, 107, 82, 1, 0, 0, 0, 107, 85, 1, 0, 0, 0, 107, 88, 1, 0, 0, 0, 107,
-		91, 1, 0, 0, 0, 107, 94, 1, 0, 0, 0, 107, 97, 1, 0, 0, 0, 107, 100, 1,
-		0, 0, 0, 107, 104, 1, 0, 0, 0, 108, 111, 1, 0, 0, 0, 109, 107, 1, 0, 0,
-		0, 109, 110, 1, 0, 0, 0, 110, 7, 1, 0, 0, 0, 111, 109, 1, 0, 0, 0, 112,
-		113, 5, 77, 0, 0, 113, 115, 5, 26, 0, 0, 114, 116, 3, 16, 8, 0, 115, 114,
-		1, 0, 0, 0, 115, 116, 1, 0, 0, 0, 116, 117, 1, 0, 0, 0, 117, 118, 5, 27,
-		0, 0, 118, 9, 1, 0, 0, 0, 119, 120, 5, 77, 0, 0, 120, 122, 5, 28, 0, 0,
-		121, 123, 3, 12, 6, 0, 122, 121, 1, 0, 0, 0, 122, 123, 1, 0, 0, 0, 123,
-		124, 1, 0, 0, 0, 124, 125, 5, 29, 0, 0, 125, 11, 1, 0, 0, 0, 126, 127,
-		5, 77, 0, 0, 127, 128, 5, 34, 0, 0, 128, 135, 3, 6, 3, 0, 129, 130, 5,
-		32, 0, 0, 130, 131, 5, 77, 0, 0, 131, 132, 5, 34, 0, 0, 132, 134, 3, 6,
-		3, 0, 133, 129, 1, 0, 0, 0, 134, 137, 1, 0, 0, 0, 135, 133, 1, 0, 0, 0,
-		135, 136, 1, 0, 0, 0, 136, 13, 1, 0, 0, 0, 137, 135, 1, 0, 0, 0, 138, 139,
-		3, 6, 3, 0, 139, 15, 1, 0, 0, 0, 140, 145, 3, 14, 7, 0, 141, 142, 5, 32,
-		0, 0, 142, 144, 3, 14, 7, 0, 143, 141, 1, 0, 0, 0, 144, 147, 1, 0, 0, 0,
-		145, 143, 1, 0, 0, 0, 145, 146, 1, 0, 0, 0, 146, 17, 1, 0, 0, 0, 147, 145,
-		1, 0, 0, 0, 148, 149, 5, 77, 0, 0, 149, 150, 5, 34, 0, 0, 150, 151, 3,
-		0, 0, 0, 151, 19, 1, 0, 0, 0, 152, 157, 3, 18, 9, 0, 153, 154, 5, 32, 0,
-		0, 154, 156, 3, 18, 9, 0, 155, 153, 1, 0, 0, 0, 156, 159, 1, 0, 0, 0, 157,
-		155, 1, 0, 0, 0, 157, 158, 1, 0, 0, 0, 158, 21, 1, 0, 0, 0, 159, 157, 1,
-		0, 0, 0, 160, 161, 5, 52, 0, 0, 161, 162, 5, 77, 0, 0, 162, 163, 5, 34,
-		0, 0, 163, 164, 3, 0, 0, 0, 164, 165, 5, 33, 0, 0, 165, 23, 1, 0, 0, 0,
-		166, 167, 5, 52, 0, 0, 167, 168, 5, 77, 0, 0, 168, 169, 5, 34, 0, 0, 169,
-		170, 3, 0, 0, 0, 170, 171, 3, 2, 1, 0, 171, 172, 3, 6, 3, 0, 172, 173,
-		5, 33, 0, 0, 173, 25, 1, 0, 0, 0, 174, 175, 5, 53, 0, 0, 175, 176, 5, 77,
-		0, 0, 176, 177, 5, 34, 0, 0, 177, 178, 3, 0, 0, 0, 178, 179, 3, 2, 1, 0,
-		179, 180, 3, 6, 3, 0, 180, 181, 5, 33, 0, 0, 181, 27, 1, 0, 0, 0, 182,
-		183, 7, 3, 0, 0, 183, 29, 1, 0, 0, 0, 184, 185, 5, 70, 0, 0, 185, 186,
-		5, 77, 0, 0, 186, 187, 5, 34, 0, 0, 187, 188, 3, 28, 14, 0, 188, 189, 5,
-		13, 0, 0, 189, 190, 3, 0, 0, 0, 190, 191, 5, 32, 0, 0, 191, 192, 3, 0,
-		0, 0, 192, 193, 5, 32, 0, 0, 193, 194, 5, 39, 0, 0, 194, 195, 5, 14, 0,
-		0, 195, 196, 5, 33, 0, 0, 196, 31, 1, 0, 0, 0, 197, 198, 5, 77, 0, 0, 198,
-		199, 5, 34, 0, 0, 199, 200, 3, 0, 0, 0, 200, 201, 5, 33, 0, 0, 201, 33,
-		1, 0, 0, 0, 202, 203, 5, 60, 0, 0, 203, 204, 5, 77, 0, 0, 204, 208, 5,
-		28, 0, 0, 205, 207, 3, 32, 16, 0, 206, 205, 1, 0, 0, 0, 207, 210, 1, 0,
-		0, 0, 208, 206, 1, 0, 0, 0, 208, 209, 1, 0, 0, 0, 209, 211, 1, 0, 0, 0,
-		210, 208, 1, 0, 0, 0, 211, 212, 5, 29, 0, 0, 212, 35, 1, 0, 0, 0, 213,
-		214, 5, 67, 0, 0, 214, 215, 5, 26, 0, 0, 215, 216, 3, 6, 3, 0, 216, 217,
-		5, 27, 0, 0, 217, 218, 5, 28, 0, 0, 218, 219, 3, 44, 22, 0, 219, 220, 5,
-		29, 0, 0, 220, 37, 1, 0, 0, 0, 221, 223, 5, 66, 0, 0, 222, 224, 3, 6, 3,
-		0, 223, 222, 1, 0, 0, 0, 223, 224, 1, 0, 0, 0, 224, 225, 1, 0, 0, 0, 225,
-		226, 5, 33, 0, 0, 226, 39, 1, 0, 0, 0, 227, 228, 5, 65, 0, 0, 228, 229,
-		5, 77, 0, 0, 229, 231, 5, 26, 0, 0, 230, 232, 3, 20, 10, 0, 231, 230, 1,
-		0, 0, 0, 231, 232, 1, 0, 0, 0, 232, 233, 1, 0, 0, 0, 233, 234, 5, 27, 0,
-		0, 234, 235, 5, 34, 0, 0, 235, 236, 3, 0, 0, 0, 236, 237, 5, 28, 0, 0,
-		237, 238, 3, 44, 22, 0, 238, 239, 5, 29, 0, 0, 239, 41, 1, 0, 0, 0, 240,
-		249, 3, 22, 11, 0, 241, 249, 3, 24, 12, 0, 242, 249, 3, 26, 13, 0, 243,
-		249, 3, 30, 15, 0, 244, 249, 3, 34, 17, 0, 245, 249, 3, 36, 18, 0, 246,
-		249, 3, 38, 19, 0, 247, 249, 3, 40, 20, 0, 248, 240, 1, 0, 0, 0, 248, 241,
-		1, 0, 0, 0, 248, 242, 1, 0, 0, 0, 248, 243, 1, 0, 0, 0, 248, 244, 1, 0,
-		0, 0, 248, 245, 1, 0, 0, 0, 248, 246, 1, 0, 0, 0, 248, 247, 1, 0, 0, 0,
-		249, 43, 1, 0, 0, 0, 250, 252, 3, 42, 21, 0, 251, 250, 1, 0, 0, 0, 252,
-		255, 1, 0, 0, 0, 253, 251, 1, 0, 0, 0, 253, 254, 1, 0, 0, 0, 254, 45, 1,
-		0, 0, 0, 255, 253, 1, 0, 0, 0, 256, 258, 3, 34, 17, 0, 257, 256, 1, 0,
-		0, 0, 258, 261, 1, 0, 0, 0, 259, 257, 1, 0, 0, 0, 259, 260, 1, 0, 0, 0,
-		260, 265, 1, 0, 0, 0, 261, 259, 1, 0, 0, 0, 262, 264, 3, 30, 15, 0, 263,
-		262, 1, 0, 0, 0, 264, 267, 1, 0, 0, 0, 265, 263, 1, 0, 0, 0, 265, 266,
-		1, 0, 0, 0, 266, 269, 1, 0, 0, 0, 267, 265, 1, 0, 0, 0, 268, 270, 3, 40,
-		20, 0, 269, 268, 1, 0, 0, 0, 270, 271, 1, 0, 0, 0, 271, 269, 1, 0, 0, 0,
-		271, 272, 1, 0, 0, 0, 272, 47, 1, 0, 0, 0, 16, 68, 107, 109, 115, 122,
-		135, 145, 157, 208, 223, 231, 248, 253, 259, 265, 271,
+		21, 7, 21, 2, 22, 7, 22, 2, 23, 7, 23, 2, 24, 7, 24, 2, 25, 7, 25, 1, 0,
+		1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 59, 8, 1, 1, 2, 1, 2, 1, 3, 1, 3, 1,
+		4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
+		4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 5, 4, 83, 8, 4, 10, 4, 12, 4, 86, 9, 4,
+		1, 4, 1, 4, 3, 4, 90, 8, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
+		4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
+		4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
+		4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 5, 4, 134,
+		8, 4, 10, 4, 12, 4, 137, 9, 4, 1, 5, 1, 5, 1, 5, 3, 5, 142, 8, 5, 1, 5,
+		1, 5, 1, 6, 1, 6, 1, 6, 3, 6, 149, 8, 6, 1, 6, 1, 6, 1, 7, 1, 7, 1, 7,
+		1, 7, 1, 7, 1, 7, 1, 7, 5, 7, 160, 8, 7, 10, 7, 12, 7, 163, 9, 7, 1, 8,
+		1, 8, 1, 9, 1, 9, 1, 9, 5, 9, 170, 8, 9, 10, 9, 12, 9, 173, 9, 9, 1, 10,
+		1, 10, 1, 10, 1, 10, 1, 11, 1, 11, 1, 11, 5, 11, 182, 8, 11, 10, 11, 12,
+		11, 185, 9, 11, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 13, 1, 13,
+		1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 14, 1, 14, 1, 14, 1, 14, 1,
+		14, 1, 14, 1, 14, 1, 14, 1, 15, 1, 15, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16,
+		1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 17, 1, 17, 1,
+		17, 1, 17, 1, 17, 1, 18, 1, 18, 1, 18, 1, 18, 5, 18, 233, 8, 18, 10, 18,
+		12, 18, 236, 9, 18, 1, 18, 1, 18, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1,
+		19, 1, 19, 1, 19, 1, 20, 1, 20, 3, 20, 250, 8, 20, 1, 20, 1, 20, 1, 21,
+		1, 21, 1, 21, 1, 21, 3, 21, 258, 8, 21, 1, 21, 1, 21, 1, 21, 1, 21, 1,
+		21, 1, 21, 1, 21, 1, 22, 1, 22, 1, 22, 1, 23, 1, 23, 1, 23, 1, 23, 1, 23,
+		1, 23, 1, 23, 1, 23, 1, 23, 3, 23, 279, 8, 23, 1, 24, 5, 24, 282, 8, 24,
+		10, 24, 12, 24, 285, 9, 24, 1, 25, 5, 25, 288, 8, 25, 10, 25, 12, 25, 291,
+		9, 25, 1, 25, 5, 25, 294, 8, 25, 10, 25, 12, 25, 297, 9, 25, 1, 25, 4,
+		25, 300, 8, 25, 11, 25, 12, 25, 301, 1, 25, 0, 1, 8, 26, 0, 2, 4, 6, 8,
+		10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44,
+		46, 48, 50, 0, 4, 4, 0, 42, 51, 54, 60, 62, 65, 78, 78, 1, 0, 20, 25, 1,
+		0, 11, 19, 1, 0, 72, 77, 322, 0, 52, 1, 0, 0, 0, 2, 54, 1, 0, 0, 0, 4,
+		60, 1, 0, 0, 0, 6, 62, 1, 0, 0, 0, 8, 89, 1, 0, 0, 0, 10, 138, 1, 0, 0,
+		0, 12, 145, 1, 0, 0, 0, 14, 152, 1, 0, 0, 0, 16, 164, 1, 0, 0, 0, 18, 166,
+		1, 0, 0, 0, 20, 174, 1, 0, 0, 0, 22, 178, 1, 0, 0, 0, 24, 186, 1, 0, 0,
+		0, 26, 192, 1, 0, 0, 0, 28, 200, 1, 0, 0, 0, 30, 208, 1, 0, 0, 0, 32, 210,
+		1, 0, 0, 0, 34, 223, 1, 0, 0, 0, 36, 228, 1, 0, 0, 0, 38, 239, 1, 0, 0,
+		0, 40, 247, 1, 0, 0, 0, 42, 253, 1, 0, 0, 0, 44, 266, 1, 0, 0, 0, 46, 278,
+		1, 0, 0, 0, 48, 283, 1, 0, 0, 0, 50, 289, 1, 0, 0, 0, 52, 53, 7, 0, 0,
+		0, 53, 1, 1, 0, 0, 0, 54, 58, 3, 0, 0, 0, 55, 56, 5, 30, 0, 0, 56, 57,
+		5, 39, 0, 0, 57, 59, 5, 31, 0, 0, 58, 55, 1, 0, 0, 0, 58, 59, 1, 0, 0,
+		0, 59, 3, 1, 0, 0, 0, 60, 61, 7, 1, 0, 0, 61, 5, 1, 0, 0, 0, 62, 63, 7,
+		2, 0, 0, 63, 7, 1, 0, 0, 0, 64, 65, 6, 4, -1, 0, 65, 90, 5, 36, 0, 0, 66,
+		90, 5, 37, 0, 0, 67, 90, 5, 38, 0, 0, 68, 90, 5, 39, 0, 0, 69, 90, 5, 40,
+		0, 0, 70, 90, 5, 41, 0, 0, 71, 90, 5, 78, 0, 0, 72, 90, 3, 10, 5, 0, 73,
+		90, 3, 12, 6, 0, 74, 75, 5, 26, 0, 0, 75, 76, 3, 8, 4, 0, 76, 77, 5, 27,
+		0, 0, 77, 90, 1, 0, 0, 0, 78, 79, 5, 30, 0, 0, 79, 84, 3, 8, 4, 0, 80,
+		81, 5, 32, 0, 0, 81, 83, 3, 8, 4, 0, 82, 80, 1, 0, 0, 0, 83, 86, 1, 0,
+		0, 0, 84, 82, 1, 0, 0, 0, 84, 85, 1, 0, 0, 0, 85, 87, 1, 0, 0, 0, 86, 84,
+		1, 0, 0, 0, 87, 88, 5, 31, 0, 0, 88, 90, 1, 0, 0, 0, 89, 64, 1, 0, 0, 0,
+		89, 66, 1, 0, 0, 0, 89, 67, 1, 0, 0, 0, 89, 68, 1, 0, 0, 0, 89, 69, 1,
+		0, 0, 0, 89, 70, 1, 0, 0, 0, 89, 71, 1, 0, 0, 0, 89, 72, 1, 0, 0, 0, 89,
+		73, 1, 0, 0, 0, 89, 74, 1, 0, 0, 0, 89, 78, 1, 0, 0, 0, 90, 135, 1, 0,
+		0, 0, 91, 92, 10, 11, 0, 0, 92, 93, 5, 3, 0, 0, 93, 134, 3, 8, 4, 12, 94,
+		95, 10, 10, 0, 0, 95, 96, 5, 4, 0, 0, 96, 134, 3, 8, 4, 11, 97, 98, 10,
+		9, 0, 0, 98, 99, 5, 5, 0, 0, 99, 134, 3, 8, 4, 10, 100, 101, 10, 8, 0,
+		0, 101, 102, 5, 1, 0, 0, 102, 134, 3, 8, 4, 9, 103, 104, 10, 7, 0, 0, 104,
+		105, 5, 2, 0, 0, 105, 134, 3, 8, 4, 8, 106, 107, 10, 6, 0, 0, 107, 108,
+		5, 9, 0, 0, 108, 134, 3, 8, 4, 7, 109, 110, 10, 5, 0, 0, 110, 111, 5, 10,
+		0, 0, 111, 134, 3, 8, 4, 6, 112, 113, 10, 4, 0, 0, 113, 114, 5, 6, 0, 0,
+		114, 134, 3, 8, 4, 5, 115, 116, 10, 3, 0, 0, 116, 117, 5, 7, 0, 0, 117,
+		134, 3, 8, 4, 4, 118, 119, 10, 2, 0, 0, 119, 120, 5, 8, 0, 0, 120, 134,
+		3, 8, 4, 3, 121, 122, 10, 1, 0, 0, 122, 123, 3, 6, 3, 0, 123, 124, 3, 8,
+		4, 2, 124, 134, 1, 0, 0, 0, 125, 126, 10, 15, 0, 0, 126, 127, 5, 35, 0,
+		0, 127, 134, 5, 78, 0, 0, 128, 129, 10, 13, 0, 0, 129, 130, 5, 30, 0, 0,
+		130, 131, 3, 8, 4, 0, 131, 132, 5, 31, 0, 0, 132, 134, 1, 0, 0, 0, 133,
+		91, 1, 0, 0, 0, 133, 94, 1, 0, 0, 0, 133, 97, 1, 0, 0, 0, 133, 100, 1,
+		0, 0, 0, 133, 103, 1, 0, 0, 0, 133, 106, 1, 0, 0, 0, 133, 109, 1, 0, 0,
+		0, 133, 112, 1, 0, 0, 0, 133, 115, 1, 0, 0, 0, 133, 118, 1, 0, 0, 0, 133,
+		121, 1, 0, 0, 0, 133, 125, 1, 0, 0, 0, 133, 128, 1, 0, 0, 0, 134, 137,
+		1, 0, 0, 0, 135, 133, 1, 0, 0, 0, 135, 136, 1, 0, 0, 0, 136, 9, 1, 0, 0,
+		0, 137, 135, 1, 0, 0, 0, 138, 139, 5, 78, 0, 0, 139, 141, 5, 26, 0, 0,
+		140, 142, 3, 18, 9, 0, 141, 140, 1, 0, 0, 0, 141, 142, 1, 0, 0, 0, 142,
+		143, 1, 0, 0, 0, 143, 144, 5, 27, 0, 0, 144, 11, 1, 0, 0, 0, 145, 146,
+		5, 78, 0, 0, 146, 148, 5, 28, 0, 0, 147, 149, 3, 14, 7, 0, 148, 147, 1,
+		0, 0, 0, 148, 149, 1, 0, 0, 0, 149, 150, 1, 0, 0, 0, 150, 151, 5, 29, 0,
+		0, 151, 13, 1, 0, 0, 0, 152, 153, 5, 78, 0, 0, 153, 154, 5, 34, 0, 0, 154,
+		161, 3, 8, 4, 0, 155, 156, 5, 32, 0, 0, 156, 157, 5, 78, 0, 0, 157, 158,
+		5, 34, 0, 0, 158, 160, 3, 8, 4, 0, 159, 155, 1, 0, 0, 0, 160, 163, 1, 0,
+		0, 0, 161, 159, 1, 0, 0, 0, 161, 162, 1, 0, 0, 0, 162, 15, 1, 0, 0, 0,
+		163, 161, 1, 0, 0, 0, 164, 165, 3, 8, 4, 0, 165, 17, 1, 0, 0, 0, 166, 171,
+		3, 16, 8, 0, 167, 168, 5, 32, 0, 0, 168, 170, 3, 16, 8, 0, 169, 167, 1,
+		0, 0, 0, 170, 173, 1, 0, 0, 0, 171, 169, 1, 0, 0, 0, 171, 172, 1, 0, 0,
+		0, 172, 19, 1, 0, 0, 0, 173, 171, 1, 0, 0, 0, 174, 175, 5, 78, 0, 0, 175,
+		176, 5, 34, 0, 0, 176, 177, 3, 2, 1, 0, 177, 21, 1, 0, 0, 0, 178, 183,
+		3, 20, 10, 0, 179, 180, 5, 32, 0, 0, 180, 182, 3, 20, 10, 0, 181, 179,
+		1, 0, 0, 0, 182, 185, 1, 0, 0, 0, 183, 181, 1, 0, 0, 0, 183, 184, 1, 0,
+		0, 0, 184, 23, 1, 0, 0, 0, 185, 183, 1, 0, 0, 0, 186, 187, 5, 52, 0, 0,
+		187, 188, 5, 78, 0, 0, 188, 189, 5, 34, 0, 0, 189, 190, 3, 2, 1, 0, 190,
+		191, 5, 33, 0, 0, 191, 25, 1, 0, 0, 0, 192, 193, 5, 52, 0, 0, 193, 194,
+		5, 78, 0, 0, 194, 195, 5, 34, 0, 0, 195, 196, 3, 2, 1, 0, 196, 197, 3,
+		4, 2, 0, 197, 198, 3, 8, 4, 0, 198, 199, 5, 33, 0, 0, 199, 27, 1, 0, 0,
+		0, 200, 201, 5, 53, 0, 0, 201, 202, 5, 78, 0, 0, 202, 203, 5, 34, 0, 0,
+		203, 204, 3, 2, 1, 0, 204, 205, 3, 4, 2, 0, 205, 206, 3, 8, 4, 0, 206,
+		207, 5, 33, 0, 0, 207, 29, 1, 0, 0, 0, 208, 209, 7, 3, 0, 0, 209, 31, 1,
+		0, 0, 0, 210, 211, 5, 71, 0, 0, 211, 212, 5, 78, 0, 0, 212, 213, 5, 34,
+		0, 0, 213, 214, 3, 30, 15, 0, 214, 215, 5, 13, 0, 0, 215, 216, 3, 2, 1,
+		0, 216, 217, 5, 32, 0, 0, 217, 218, 3, 2, 1, 0, 218, 219, 5, 32, 0, 0,
+		219, 220, 5, 39, 0, 0, 220, 221, 5, 14, 0, 0, 221, 222, 5, 33, 0, 0, 222,
+		33, 1, 0, 0, 0, 223, 224, 5, 78, 0, 0, 224, 225, 5, 34, 0, 0, 225, 226,
+		3, 2, 1, 0, 226, 227, 5, 33, 0, 0, 227, 35, 1, 0, 0, 0, 228, 229, 5, 61,
+		0, 0, 229, 230, 5, 78, 0, 0, 230, 234, 5, 28, 0, 0, 231, 233, 3, 34, 17,
+		0, 232, 231, 1, 0, 0, 0, 233, 236, 1, 0, 0, 0, 234, 232, 1, 0, 0, 0, 234,
+		235, 1, 0, 0, 0, 235, 237, 1, 0, 0, 0, 236, 234, 1, 0, 0, 0, 237, 238,
+		5, 29, 0, 0, 238, 37, 1, 0, 0, 0, 239, 240, 5, 68, 0, 0, 240, 241, 5, 26,
+		0, 0, 241, 242, 3, 8, 4, 0, 242, 243, 5, 27, 0, 0, 243, 244, 5, 28, 0,
+		0, 244, 245, 3, 48, 24, 0, 245, 246, 5, 29, 0, 0, 246, 39, 1, 0, 0, 0,
+		247, 249, 5, 67, 0, 0, 248, 250, 3, 8, 4, 0, 249, 248, 1, 0, 0, 0, 249,
+		250, 1, 0, 0, 0, 250, 251, 1, 0, 0, 0, 251, 252, 5, 33, 0, 0, 252, 41,
+		1, 0, 0, 0, 253, 254, 5, 66, 0, 0, 254, 255, 5, 78, 0, 0, 255, 257, 5,
+		26, 0, 0, 256, 258, 3, 22, 11, 0, 257, 256, 1, 0, 0, 0, 257, 258, 1, 0,
+		0, 0, 258, 259, 1, 0, 0, 0, 259, 260, 5, 27, 0, 0, 260, 261, 5, 34, 0,
+		0, 261, 262, 3, 2, 1, 0, 262, 263, 5, 28, 0, 0, 263, 264, 3, 48, 24, 0,
+		264, 265, 5, 29, 0, 0, 265, 43, 1, 0, 0, 0, 266, 267, 3, 10, 5, 0, 267,
+		268, 5, 33, 0, 0, 268, 45, 1, 0, 0, 0, 269, 279, 3, 24, 12, 0, 270, 279,
+		3, 26, 13, 0, 271, 279, 3, 28, 14, 0, 272, 279, 3, 32, 16, 0, 273, 279,
+		3, 36, 18, 0, 274, 279, 3, 38, 19, 0, 275, 279, 3, 40, 20, 0, 276, 279,
+		3, 42, 21, 0, 277, 279, 3, 44, 22, 0, 278, 269, 1, 0, 0, 0, 278, 270, 1,
+		0, 0, 0, 278, 271, 1, 0, 0, 0, 278, 272, 1, 0, 0, 0, 278, 273, 1, 0, 0,
+		0, 278, 274, 1, 0, 0, 0, 278, 275, 1, 0, 0, 0, 278, 276, 1, 0, 0, 0, 278,
+		277, 1, 0, 0, 0, 279, 47, 1, 0, 0, 0, 280, 282, 3, 46, 23, 0, 281, 280,
+		1, 0, 0, 0, 282, 285, 1, 0, 0, 0, 283, 281, 1, 0, 0, 0, 283, 284, 1, 0,
+		0, 0, 284, 49, 1, 0, 0, 0, 285, 283, 1, 0, 0, 0, 286, 288, 3, 36, 18, 0,
+		287, 286, 1, 0, 0, 0, 288, 291, 1, 0, 0, 0, 289, 287, 1, 0, 0, 0, 289,
+		290, 1, 0, 0, 0, 290, 295, 1, 0, 0, 0, 291, 289, 1, 0, 0, 0, 292, 294,
+		3, 32, 16, 0, 293, 292, 1, 0, 0, 0, 294, 297, 1, 0, 0, 0, 295, 293, 1,
+		0, 0, 0, 295, 296, 1, 0, 0, 0, 296, 299, 1, 0, 0, 0, 297, 295, 1, 0, 0,
+		0, 298, 300, 3, 42, 21, 0, 299, 298, 1, 0, 0, 0, 300, 301, 1, 0, 0, 0,
+		301, 299, 1, 0, 0, 0, 301, 302, 1, 0, 0, 0, 302, 51, 1, 0, 0, 0, 18, 58,
+		84, 89, 133, 135, 141, 148, 161, 171, 183, 234, 249, 257, 278, 283, 289,
+		295, 301,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -276,64 +291,67 @@ const (
 	ezbpfParserVAR                          = 52
 	ezbpfParserCONST                        = 53
 	ezbpfParserCHAR                         = 54
-	ezbpfParserINT                          = 55
-	ezbpfParserLONG                         = 56
-	ezbpfParserSHORT                        = 57
-	ezbpfParserUINT                         = 58
-	ezbpfParserVOID                         = 59
-	ezbpfParserSTRUCT                       = 60
-	ezbpfParserETHHDR                       = 61
-	ezbpfParserIPHDR                        = 62
-	ezbpfParserTCPHDR                       = 63
-	ezbpfParserUDPHDR                       = 64
-	ezbpfParserFN                           = 65
-	ezbpfParserRETURN                       = 66
-	ezbpfParserIF                           = 67
-	ezbpfParserELSEIF                       = 68
-	ezbpfParserELSE                         = 69
-	ezbpfParserMAP                          = 70
-	ezbpfParserBPF_MAP_TYPE_HASH            = 71
-	ezbpfParserBPF_MAP_TYPE_ARRAY           = 72
-	ezbpfParserBPF_MAP_TYPE_PERCPU_HASH     = 73
-	ezbpfParserBPF_MAP_TYPE_PERCPU_ARRAY    = 74
-	ezbpfParserBPF_MAP_TYPE_LRU_HASH        = 75
-	ezbpfParserBPF_MAP_TYPE_LRU_PERCPU_HASH = 76
-	ezbpfParserIDENTIFIER                   = 77
-	ezbpfParserWS                           = 78
-	ezbpfParserCOMMENT                      = 79
-	ezbpfParserMULTI_COMMENT                = 80
+	ezbpfParserUCHAR                        = 55
+	ezbpfParserINT                          = 56
+	ezbpfParserLONG                         = 57
+	ezbpfParserSHORT                        = 58
+	ezbpfParserUINT                         = 59
+	ezbpfParserVOID                         = 60
+	ezbpfParserSTRUCT                       = 61
+	ezbpfParserETHHDR                       = 62
+	ezbpfParserIPHDR                        = 63
+	ezbpfParserTCPHDR                       = 64
+	ezbpfParserUDPHDR                       = 65
+	ezbpfParserFN                           = 66
+	ezbpfParserRETURN                       = 67
+	ezbpfParserIF                           = 68
+	ezbpfParserELSEIF                       = 69
+	ezbpfParserELSE                         = 70
+	ezbpfParserMAP                          = 71
+	ezbpfParserBPF_MAP_TYPE_HASH            = 72
+	ezbpfParserBPF_MAP_TYPE_ARRAY           = 73
+	ezbpfParserBPF_MAP_TYPE_PERCPU_HASH     = 74
+	ezbpfParserBPF_MAP_TYPE_PERCPU_ARRAY    = 75
+	ezbpfParserBPF_MAP_TYPE_LRU_HASH        = 76
+	ezbpfParserBPF_MAP_TYPE_LRU_PERCPU_HASH = 77
+	ezbpfParserIDENTIFIER                   = 78
+	ezbpfParserWS                           = 79
+	ezbpfParserCOMMENT                      = 80
+	ezbpfParserMULTI_COMMENT                = 81
 )
 
 // ezbpfParser rules.
 const (
-	ezbpfParserRULE_type                 = 0
-	ezbpfParserRULE_assign               = 1
-	ezbpfParserRULE_compare              = 2
-	ezbpfParserRULE_expression           = 3
-	ezbpfParserRULE_funcCallExpression   = 4
-	ezbpfParserRULE_structInitExpression = 5
-	ezbpfParserRULE_structFieldAssign    = 6
-	ezbpfParserRULE_arg                  = 7
-	ezbpfParserRULE_args                 = 8
-	ezbpfParserRULE_param                = 9
-	ezbpfParserRULE_params               = 10
-	ezbpfParserRULE_varInitStmt          = 11
-	ezbpfParserRULE_varDeclStmt          = 12
-	ezbpfParserRULE_constDeclStmt        = 13
-	ezbpfParserRULE_mapType              = 14
-	ezbpfParserRULE_mapDeclStmt          = 15
-	ezbpfParserRULE_structDataMemStmt    = 16
-	ezbpfParserRULE_structDeclStmt       = 17
-	ezbpfParserRULE_ifStmt               = 18
-	ezbpfParserRULE_returnStmt           = 19
-	ezbpfParserRULE_funcDeclStmt         = 20
-	ezbpfParserRULE_stmt                 = 21
-	ezbpfParserRULE_stmts                = 22
-	ezbpfParserRULE_prog                 = 23
+	ezbpfParserRULE_baseType             = 0
+	ezbpfParserRULE_type                 = 1
+	ezbpfParserRULE_assign               = 2
+	ezbpfParserRULE_compare              = 3
+	ezbpfParserRULE_expression           = 4
+	ezbpfParserRULE_funcCallExpression   = 5
+	ezbpfParserRULE_structInitExpression = 6
+	ezbpfParserRULE_structFieldAssign    = 7
+	ezbpfParserRULE_arg                  = 8
+	ezbpfParserRULE_args                 = 9
+	ezbpfParserRULE_param                = 10
+	ezbpfParserRULE_params               = 11
+	ezbpfParserRULE_varInitStmt          = 12
+	ezbpfParserRULE_varDeclStmt          = 13
+	ezbpfParserRULE_constDeclStmt        = 14
+	ezbpfParserRULE_mapType              = 15
+	ezbpfParserRULE_mapDeclStmt          = 16
+	ezbpfParserRULE_structDataMemStmt    = 17
+	ezbpfParserRULE_structDeclStmt       = 18
+	ezbpfParserRULE_ifStmt               = 19
+	ezbpfParserRULE_returnStmt           = 20
+	ezbpfParserRULE_funcDeclStmt         = 21
+	ezbpfParserRULE_funcCallStmt         = 22
+	ezbpfParserRULE_stmt                 = 23
+	ezbpfParserRULE_stmts                = 24
+	ezbpfParserRULE_prog                 = 25
 )
 
-// ITypeContext is an interface to support dynamic dispatch.
-type ITypeContext interface {
+// IBaseTypeContext is an interface to support dynamic dispatch.
+type IBaseTypeContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
@@ -351,6 +369,7 @@ type ITypeContext interface {
 	SPTR32() antlr.TerminalNode
 	SPTR64() antlr.TerminalNode
 	CHAR() antlr.TerminalNode
+	UCHAR() antlr.TerminalNode
 	SHORT() antlr.TerminalNode
 	LONG() antlr.TerminalNode
 	UINT() antlr.TerminalNode
@@ -361,6 +380,192 @@ type ITypeContext interface {
 	TCPHDR() antlr.TerminalNode
 	UDPHDR() antlr.TerminalNode
 	IDENTIFIER() antlr.TerminalNode
+
+	// IsBaseTypeContext differentiates from other interfaces.
+	IsBaseTypeContext()
+}
+
+type BaseTypeContext struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyBaseTypeContext() *BaseTypeContext {
+	var p = new(BaseTypeContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ezbpfParserRULE_baseType
+	return p
+}
+
+func InitEmptyBaseTypeContext(p *BaseTypeContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ezbpfParserRULE_baseType
+}
+
+func (*BaseTypeContext) IsBaseTypeContext() {}
+
+func NewBaseTypeContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BaseTypeContext {
+	var p = new(BaseTypeContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = ezbpfParserRULE_baseType
+
+	return p
+}
+
+func (s *BaseTypeContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *BaseTypeContext) U32() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserU32, 0)
+}
+
+func (s *BaseTypeContext) U64() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserU64, 0)
+}
+
+func (s *BaseTypeContext) UPTR32() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserUPTR32, 0)
+}
+
+func (s *BaseTypeContext) UPTR64() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserUPTR64, 0)
+}
+
+func (s *BaseTypeContext) BEPTR32() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserBEPTR32, 0)
+}
+
+func (s *BaseTypeContext) BEPTR64() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserBEPTR64, 0)
+}
+
+func (s *BaseTypeContext) S32() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserS32, 0)
+}
+
+func (s *BaseTypeContext) S64() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserS64, 0)
+}
+
+func (s *BaseTypeContext) SPTR32() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserSPTR32, 0)
+}
+
+func (s *BaseTypeContext) SPTR64() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserSPTR64, 0)
+}
+
+func (s *BaseTypeContext) CHAR() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserCHAR, 0)
+}
+
+func (s *BaseTypeContext) UCHAR() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserUCHAR, 0)
+}
+
+func (s *BaseTypeContext) SHORT() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserSHORT, 0)
+}
+
+func (s *BaseTypeContext) LONG() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserLONG, 0)
+}
+
+func (s *BaseTypeContext) UINT() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserUINT, 0)
+}
+
+func (s *BaseTypeContext) INT() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserINT, 0)
+}
+
+func (s *BaseTypeContext) VOID() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserVOID, 0)
+}
+
+func (s *BaseTypeContext) ETHHDR() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserETHHDR, 0)
+}
+
+func (s *BaseTypeContext) IPHDR() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserIPHDR, 0)
+}
+
+func (s *BaseTypeContext) TCPHDR() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserTCPHDR, 0)
+}
+
+func (s *BaseTypeContext) UDPHDR() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserUDPHDR, 0)
+}
+
+func (s *BaseTypeContext) IDENTIFIER() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserIDENTIFIER, 0)
+}
+
+func (s *BaseTypeContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *BaseTypeContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *BaseTypeContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case ezbpfVisitor:
+		return t.VisitBaseType(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+func (p *ezbpfParser) BaseType() (localctx IBaseTypeContext) {
+	localctx = NewBaseTypeContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 0, ezbpfParserRULE_baseType)
+	var _la int
+
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(52)
+		_la = p.GetTokenStream().LA(1)
+
+		if !((int64((_la-42)) & ^0x3f) == 0 && ((int64(1)<<(_la-42))&68735726591) != 0) {
+			p.GetErrorHandler().RecoverInline(p)
+		} else {
+			p.GetErrorHandler().ReportMatch(p)
+			p.Consume()
+		}
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// ITypeContext is an interface to support dynamic dispatch.
+type ITypeContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	BaseType() IBaseTypeContext
+	LSQ() antlr.TerminalNode
+	DEC_LITERAL() antlr.TerminalNode
+	RSQ() antlr.TerminalNode
 
 	// IsTypeContext differentiates from other interfaces.
 	IsTypeContext()
@@ -398,88 +603,32 @@ func NewTypeContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokin
 
 func (s *TypeContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *TypeContext) U32() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserU32, 0)
+func (s *TypeContext) BaseType() IBaseTypeContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IBaseTypeContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IBaseTypeContext)
 }
 
-func (s *TypeContext) U64() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserU64, 0)
+func (s *TypeContext) LSQ() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserLSQ, 0)
 }
 
-func (s *TypeContext) UPTR32() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserUPTR32, 0)
+func (s *TypeContext) DEC_LITERAL() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserDEC_LITERAL, 0)
 }
 
-func (s *TypeContext) UPTR64() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserUPTR64, 0)
-}
-
-func (s *TypeContext) BEPTR32() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserBEPTR32, 0)
-}
-
-func (s *TypeContext) BEPTR64() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserBEPTR64, 0)
-}
-
-func (s *TypeContext) S32() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserS32, 0)
-}
-
-func (s *TypeContext) S64() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserS64, 0)
-}
-
-func (s *TypeContext) SPTR32() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserSPTR32, 0)
-}
-
-func (s *TypeContext) SPTR64() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserSPTR64, 0)
-}
-
-func (s *TypeContext) CHAR() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserCHAR, 0)
-}
-
-func (s *TypeContext) SHORT() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserSHORT, 0)
-}
-
-func (s *TypeContext) LONG() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserLONG, 0)
-}
-
-func (s *TypeContext) UINT() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserUINT, 0)
-}
-
-func (s *TypeContext) INT() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserINT, 0)
-}
-
-func (s *TypeContext) VOID() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserVOID, 0)
-}
-
-func (s *TypeContext) ETHHDR() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserETHHDR, 0)
-}
-
-func (s *TypeContext) IPHDR() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserIPHDR, 0)
-}
-
-func (s *TypeContext) TCPHDR() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserTCPHDR, 0)
-}
-
-func (s *TypeContext) UDPHDR() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserUDPHDR, 0)
-}
-
-func (s *TypeContext) IDENTIFIER() antlr.TerminalNode {
-	return s.GetToken(ezbpfParserIDENTIFIER, 0)
+func (s *TypeContext) RSQ() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserRSQ, 0)
 }
 
 func (s *TypeContext) GetRuleContext() antlr.RuleContext {
@@ -502,20 +651,47 @@ func (s *TypeContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Type_() (localctx ITypeContext) {
 	localctx = NewTypeContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 0, ezbpfParserRULE_type)
+	p.EnterRule(localctx, 2, ezbpfParserRULE_type)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(48)
-		_la = p.GetTokenStream().LA(1)
+		p.SetState(54)
+		p.BaseType()
+	}
+	p.SetState(58)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
+	_la = p.GetTokenStream().LA(1)
 
-		if !((int64((_la-42)) & ^0x3f) == 0 && ((int64(1)<<(_la-42))&34367861759) != 0) {
-			p.GetErrorHandler().RecoverInline(p)
-		} else {
-			p.GetErrorHandler().ReportMatch(p)
-			p.Consume()
+	if _la == ezbpfParserLSQ {
+		{
+			p.SetState(55)
+			p.Match(ezbpfParserLSQ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
+		{
+			p.SetState(56)
+			p.Match(ezbpfParserDEC_LITERAL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(57)
+			p.Match(ezbpfParserRSQ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
 	}
 
 errorExit:
@@ -626,12 +802,12 @@ func (s *AssignContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Assign() (localctx IAssignContext) {
 	localctx = NewAssignContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 2, ezbpfParserRULE_assign)
+	p.EnterRule(localctx, 4, ezbpfParserRULE_assign)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(50)
+		p.SetState(60)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&66060288) != 0) {
@@ -765,12 +941,12 @@ func (s *CompareContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Compare() (localctx ICompareContext) {
 	localctx = NewCompareContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 4, ezbpfParserRULE_compare)
+	p.EnterRule(localctx, 6, ezbpfParserRULE_compare)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(52)
+		p.SetState(62)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&1046528) != 0) {
@@ -1551,6 +1727,91 @@ func (s *CompareExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interf
 	}
 }
 
+type ArrayLiteralExpressionContext struct {
+	ExpressionContext
+}
+
+func NewArrayLiteralExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ArrayLiteralExpressionContext {
+	var p = new(ArrayLiteralExpressionContext)
+
+	InitEmptyExpressionContext(&p.ExpressionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ExpressionContext))
+
+	return p
+}
+
+func (s *ArrayLiteralExpressionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ArrayLiteralExpressionContext) LSQ() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserLSQ, 0)
+}
+
+func (s *ArrayLiteralExpressionContext) AllExpression() []IExpressionContext {
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
+
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
+			tst[i] = t.(IExpressionContext)
+			i++
+		}
+	}
+
+	return tst
+}
+
+func (s *ArrayLiteralExpressionContext) Expression(i int) IExpressionContext {
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExpressionContext)
+}
+
+func (s *ArrayLiteralExpressionContext) RSQ() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserRSQ, 0)
+}
+
+func (s *ArrayLiteralExpressionContext) AllCOMMA() []antlr.TerminalNode {
+	return s.GetTokens(ezbpfParserCOMMA)
+}
+
+func (s *ArrayLiteralExpressionContext) COMMA(i int) antlr.TerminalNode {
+	return s.GetToken(ezbpfParserCOMMA, i)
+}
+
+func (s *ArrayLiteralExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case ezbpfVisitor:
+		return t.VisitArrayLiteralExpression(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 type AddExpressionContext struct {
 	ExpressionContext
 }
@@ -1849,6 +2110,83 @@ func (s *RshiftExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interfa
 	}
 }
 
+type IndexExpressionContext struct {
+	ExpressionContext
+}
+
+func NewIndexExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *IndexExpressionContext {
+	var p = new(IndexExpressionContext)
+
+	InitEmptyExpressionContext(&p.ExpressionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ExpressionContext))
+
+	return p
+}
+
+func (s *IndexExpressionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *IndexExpressionContext) AllExpression() []IExpressionContext {
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
+
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
+			tst[i] = t.(IExpressionContext)
+			i++
+		}
+	}
+
+	return tst
+}
+
+func (s *IndexExpressionContext) Expression(i int) IExpressionContext {
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExpressionContext)
+}
+
+func (s *IndexExpressionContext) LSQ() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserLSQ, 0)
+}
+
+func (s *IndexExpressionContext) RSQ() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserRSQ, 0)
+}
+
+func (s *IndexExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case ezbpfVisitor:
+		return t.VisitIndexExpression(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 type ParExpressionContext struct {
 	ExpressionContext
 }
@@ -2090,25 +2428,27 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 	localctx = NewExpressionContext(p, p.GetParserRuleContext(), _parentState)
 	var _prevctx IExpressionContext = localctx
 	var _ antlr.ParserRuleContext = _prevctx // TODO: To prevent unused variable warning.
-	_startState := 6
-	p.EnterRecursionRule(localctx, 6, ezbpfParserRULE_expression, _p)
+	_startState := 8
+	p.EnterRecursionRule(localctx, 8, ezbpfParserRULE_expression, _p)
+	var _la int
+
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(68)
+	p.SetState(89)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 
-	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 0, p.GetParserRuleContext()) {
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewHexLiteralExpressionContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 
 		{
-			p.SetState(55)
+			p.SetState(65)
 			p.Match(ezbpfParserHEX_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2121,7 +2461,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(56)
+			p.SetState(66)
 			p.Match(ezbpfParserOCT_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2134,7 +2474,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(57)
+			p.SetState(67)
 			p.Match(ezbpfParserBIN_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2147,7 +2487,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(58)
+			p.SetState(68)
 			p.Match(ezbpfParserDEC_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2160,7 +2500,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(59)
+			p.SetState(69)
 			p.Match(ezbpfParserCHAR_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2173,7 +2513,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(60)
+			p.SetState(70)
 			p.Match(ezbpfParserSTRING_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2186,7 +2526,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(61)
+			p.SetState(71)
 			p.Match(ezbpfParserIDENTIFIER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2199,7 +2539,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(62)
+			p.SetState(72)
 			p.FuncCallExpression()
 		}
 
@@ -2208,7 +2548,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(63)
+			p.SetState(73)
 			p.StructInitExpression()
 		}
 
@@ -2217,7 +2557,7 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(64)
+			p.SetState(74)
 			p.Match(ezbpfParserLPAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2225,12 +2565,65 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(65)
+			p.SetState(75)
 			p.expression(0)
 		}
 		{
-			p.SetState(66)
+			p.SetState(76)
 			p.Match(ezbpfParserRPAR)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
+	case 11:
+		localctx = NewArrayLiteralExpressionContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
+		{
+			p.SetState(78)
+			p.Match(ezbpfParserLSQ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(79)
+			p.expression(0)
+		}
+		p.SetState(84)
+		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
+		_la = p.GetTokenStream().LA(1)
+
+		for _la == ezbpfParserCOMMA {
+			{
+				p.SetState(80)
+				p.Match(ezbpfParserCOMMA)
+				if p.HasError() {
+					// Recognition error - abort rule
+					goto errorExit
+				}
+			}
+			{
+				p.SetState(81)
+				p.expression(0)
+			}
+
+			p.SetState(86)
+			p.GetErrorHandler().Sync(p)
+			if p.HasError() {
+				goto errorExit
+			}
+			_la = p.GetTokenStream().LA(1)
+		}
+		{
+			p.SetState(87)
+			p.Match(ezbpfParserRSQ)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
@@ -2241,12 +2634,12 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(109)
+	p.SetState(135)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
-	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext())
+	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 4, p.GetParserRuleContext())
 	if p.HasError() {
 		goto errorExit
 	}
@@ -2256,24 +2649,24 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(107)
+			p.SetState(133)
 			p.GetErrorHandler().Sync(p)
 			if p.HasError() {
 				goto errorExit
 			}
 
-			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 1, p.GetParserRuleContext()) {
+			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 3, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewMulExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(70)
+				p.SetState(91)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 11)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 11)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(71)
+					p.SetState(92)
 					p.Match(ezbpfParserMUL)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2281,21 +2674,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(72)
+					p.SetState(93)
 					p.expression(12)
 				}
 
 			case 2:
 				localctx = NewDivExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(73)
+				p.SetState(94)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 10)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 10)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(74)
+					p.SetState(95)
 					p.Match(ezbpfParserDIV)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2303,21 +2696,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(75)
+					p.SetState(96)
 					p.expression(11)
 				}
 
 			case 3:
 				localctx = NewModExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(76)
+				p.SetState(97)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 9)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 9)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(77)
+					p.SetState(98)
 					p.Match(ezbpfParserMOD)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2325,21 +2718,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(78)
+					p.SetState(99)
 					p.expression(10)
 				}
 
 			case 4:
 				localctx = NewAddExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(79)
+				p.SetState(100)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 8)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 8)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(80)
+					p.SetState(101)
 					p.Match(ezbpfParserADD)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2347,21 +2740,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(81)
+					p.SetState(102)
 					p.expression(9)
 				}
 
 			case 5:
 				localctx = NewSubExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(82)
+				p.SetState(103)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 7)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(83)
+					p.SetState(104)
 					p.Match(ezbpfParserSUB)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2369,21 +2762,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(84)
+					p.SetState(105)
 					p.expression(8)
 				}
 
 			case 6:
 				localctx = NewLshiftExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(85)
+				p.SetState(106)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 6)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(86)
+					p.SetState(107)
 					p.Match(ezbpfParserLSHIFT)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2391,21 +2784,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(87)
+					p.SetState(108)
 					p.expression(7)
 				}
 
 			case 7:
 				localctx = NewRshiftExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(88)
+				p.SetState(109)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(89)
+					p.SetState(110)
 					p.Match(ezbpfParserRSHIFT)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2413,21 +2806,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(90)
+					p.SetState(111)
 					p.expression(6)
 				}
 
 			case 8:
 				localctx = NewBitandExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(91)
+				p.SetState(112)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(92)
+					p.SetState(113)
 					p.Match(ezbpfParserBIT_AND)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2435,21 +2828,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(93)
+					p.SetState(114)
 					p.expression(5)
 				}
 
 			case 9:
 				localctx = NewBitorExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(94)
+				p.SetState(115)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(95)
+					p.SetState(116)
 					p.Match(ezbpfParserBIT_OR)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2457,21 +2850,21 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(96)
+					p.SetState(117)
 					p.expression(4)
 				}
 
 			case 10:
 				localctx = NewBitxorExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(97)
+				p.SetState(118)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(98)
+					p.SetState(119)
 					p.Match(ezbpfParserBIT_XOR)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2479,39 +2872,39 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(99)
+					p.SetState(120)
 					p.expression(3)
 				}
 
 			case 11:
 				localctx = NewCompareExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(100)
+				p.SetState(121)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 1)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 1)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(101)
+					p.SetState(122)
 					p.Compare()
 				}
 				{
-					p.SetState(102)
+					p.SetState(123)
 					p.expression(2)
 				}
 
 			case 12:
 				localctx = NewDotExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
-				p.SetState(104)
+				p.SetState(125)
 
-				if !(p.Precpred(p.GetParserRuleContext(), 13)) {
-					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 13)", ""))
+				if !(p.Precpred(p.GetParserRuleContext(), 15)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 15)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(105)
+					p.SetState(126)
 					p.Match(ezbpfParserDOT)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2519,8 +2912,38 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(106)
+					p.SetState(127)
 					p.Match(ezbpfParserIDENTIFIER)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
+				}
+
+			case 13:
+				localctx = NewIndexExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, ezbpfParserRULE_expression)
+				p.SetState(128)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 13)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 13)", ""))
+					goto errorExit
+				}
+				{
+					p.SetState(129)
+					p.Match(ezbpfParserLSQ)
+					if p.HasError() {
+						// Recognition error - abort rule
+						goto errorExit
+					}
+				}
+				{
+					p.SetState(130)
+					p.expression(0)
+				}
+				{
+					p.SetState(131)
+					p.Match(ezbpfParserRSQ)
 					if p.HasError() {
 						// Recognition error - abort rule
 						goto errorExit
@@ -2532,12 +2955,12 @@ func (p *ezbpfParser) expression(_p int) (localctx IExpressionContext) {
 			}
 
 		}
-		p.SetState(111)
+		p.SetState(137)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
 		}
-		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext())
+		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 4, p.GetParserRuleContext())
 		if p.HasError() {
 			goto errorExit
 		}
@@ -2653,12 +3076,12 @@ func (s *FuncCallExpressionContext) Accept(visitor antlr.ParseTreeVisitor) inter
 
 func (p *ezbpfParser) FuncCallExpression() (localctx IFuncCallExpressionContext) {
 	localctx = NewFuncCallExpressionContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 8, ezbpfParserRULE_funcCallExpression)
+	p.EnterRule(localctx, 10, ezbpfParserRULE_funcCallExpression)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(112)
+		p.SetState(138)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2666,29 +3089,29 @@ func (p *ezbpfParser) FuncCallExpression() (localctx IFuncCallExpressionContext)
 		}
 	}
 	{
-		p.SetState(113)
+		p.SetState(139)
 		p.Match(ezbpfParserLPAR)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(115)
+	p.SetState(141)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	if (int64((_la-26)) & ^0x3f) == 0 && ((int64(1)<<(_la-26))&2251799813749761) != 0 {
+	if (int64((_la-26)) & ^0x3f) == 0 && ((int64(1)<<(_la-26))&4503599627435025) != 0 {
 		{
-			p.SetState(114)
+			p.SetState(140)
 			p.Args()
 		}
 
 	}
 	{
-		p.SetState(117)
+		p.SetState(143)
 		p.Match(ezbpfParserRPAR)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2806,12 +3229,12 @@ func (s *StructInitExpressionContext) Accept(visitor antlr.ParseTreeVisitor) int
 
 func (p *ezbpfParser) StructInitExpression() (localctx IStructInitExpressionContext) {
 	localctx = NewStructInitExpressionContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 10, ezbpfParserRULE_structInitExpression)
+	p.EnterRule(localctx, 12, ezbpfParserRULE_structInitExpression)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(119)
+		p.SetState(145)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2819,14 +3242,14 @@ func (p *ezbpfParser) StructInitExpression() (localctx IStructInitExpressionCont
 		}
 	}
 	{
-		p.SetState(120)
+		p.SetState(146)
 		p.Match(ezbpfParserLBRA)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(122)
+	p.SetState(148)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2835,13 +3258,13 @@ func (p *ezbpfParser) StructInitExpression() (localctx IStructInitExpressionCont
 
 	if _la == ezbpfParserIDENTIFIER {
 		{
-			p.SetState(121)
+			p.SetState(147)
 			p.StructFieldAssign()
 		}
 
 	}
 	{
-		p.SetState(124)
+		p.SetState(150)
 		p.Match(ezbpfParserRBRA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3000,12 +3423,12 @@ func (s *StructFieldAssignContext) Accept(visitor antlr.ParseTreeVisitor) interf
 
 func (p *ezbpfParser) StructFieldAssign() (localctx IStructFieldAssignContext) {
 	localctx = NewStructFieldAssignContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 12, ezbpfParserRULE_structFieldAssign)
+	p.EnterRule(localctx, 14, ezbpfParserRULE_structFieldAssign)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(126)
+		p.SetState(152)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3013,7 +3436,7 @@ func (p *ezbpfParser) StructFieldAssign() (localctx IStructFieldAssignContext) {
 		}
 	}
 	{
-		p.SetState(127)
+		p.SetState(153)
 		p.Match(ezbpfParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3021,10 +3444,10 @@ func (p *ezbpfParser) StructFieldAssign() (localctx IStructFieldAssignContext) {
 		}
 	}
 	{
-		p.SetState(128)
+		p.SetState(154)
 		p.expression(0)
 	}
-	p.SetState(135)
+	p.SetState(161)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3033,7 +3456,7 @@ func (p *ezbpfParser) StructFieldAssign() (localctx IStructFieldAssignContext) {
 
 	for _la == ezbpfParserCOMMA {
 		{
-			p.SetState(129)
+			p.SetState(155)
 			p.Match(ezbpfParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3041,7 +3464,7 @@ func (p *ezbpfParser) StructFieldAssign() (localctx IStructFieldAssignContext) {
 			}
 		}
 		{
-			p.SetState(130)
+			p.SetState(156)
 			p.Match(ezbpfParserIDENTIFIER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3049,7 +3472,7 @@ func (p *ezbpfParser) StructFieldAssign() (localctx IStructFieldAssignContext) {
 			}
 		}
 		{
-			p.SetState(131)
+			p.SetState(157)
 			p.Match(ezbpfParserCOLON)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3057,11 +3480,11 @@ func (p *ezbpfParser) StructFieldAssign() (localctx IStructFieldAssignContext) {
 			}
 		}
 		{
-			p.SetState(132)
+			p.SetState(158)
 			p.expression(0)
 		}
 
-		p.SetState(137)
+		p.SetState(163)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -3164,10 +3587,10 @@ func (s *ArgContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Arg() (localctx IArgContext) {
 	localctx = NewArgContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 14, ezbpfParserRULE_arg)
+	p.EnterRule(localctx, 16, ezbpfParserRULE_arg)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(138)
+		p.SetState(164)
 		p.expression(0)
 	}
 
@@ -3302,15 +3725,15 @@ func (s *ArgsContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Args() (localctx IArgsContext) {
 	localctx = NewArgsContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 16, ezbpfParserRULE_args)
+	p.EnterRule(localctx, 18, ezbpfParserRULE_args)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(140)
+		p.SetState(166)
 		p.Arg()
 	}
-	p.SetState(145)
+	p.SetState(171)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3319,7 +3742,7 @@ func (p *ezbpfParser) Args() (localctx IArgsContext) {
 
 	for _la == ezbpfParserCOMMA {
 		{
-			p.SetState(141)
+			p.SetState(167)
 			p.Match(ezbpfParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3327,11 +3750,11 @@ func (p *ezbpfParser) Args() (localctx IArgsContext) {
 			}
 		}
 		{
-			p.SetState(142)
+			p.SetState(168)
 			p.Arg()
 		}
 
-		p.SetState(147)
+		p.SetState(173)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -3444,10 +3867,10 @@ func (s *ParamContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Param() (localctx IParamContext) {
 	localctx = NewParamContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 18, ezbpfParserRULE_param)
+	p.EnterRule(localctx, 20, ezbpfParserRULE_param)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(148)
+		p.SetState(174)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3455,7 +3878,7 @@ func (p *ezbpfParser) Param() (localctx IParamContext) {
 		}
 	}
 	{
-		p.SetState(149)
+		p.SetState(175)
 		p.Match(ezbpfParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3463,7 +3886,7 @@ func (p *ezbpfParser) Param() (localctx IParamContext) {
 		}
 	}
 	{
-		p.SetState(150)
+		p.SetState(176)
 		p.Type_()
 	}
 
@@ -3598,15 +4021,15 @@ func (s *ParamsContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Params() (localctx IParamsContext) {
 	localctx = NewParamsContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 20, ezbpfParserRULE_params)
+	p.EnterRule(localctx, 22, ezbpfParserRULE_params)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(152)
+		p.SetState(178)
 		p.Param()
 	}
-	p.SetState(157)
+	p.SetState(183)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3615,7 +4038,7 @@ func (p *ezbpfParser) Params() (localctx IParamsContext) {
 
 	for _la == ezbpfParserCOMMA {
 		{
-			p.SetState(153)
+			p.SetState(179)
 			p.Match(ezbpfParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3623,11 +4046,11 @@ func (p *ezbpfParser) Params() (localctx IParamsContext) {
 			}
 		}
 		{
-			p.SetState(154)
+			p.SetState(180)
 			p.Param()
 		}
 
-		p.SetState(159)
+		p.SetState(185)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -3750,10 +4173,10 @@ func (s *VarInitStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 
 func (p *ezbpfParser) VarInitStmt() (localctx IVarInitStmtContext) {
 	localctx = NewVarInitStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 22, ezbpfParserRULE_varInitStmt)
+	p.EnterRule(localctx, 24, ezbpfParserRULE_varInitStmt)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(160)
+		p.SetState(186)
 		p.Match(ezbpfParserVAR)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3761,7 +4184,7 @@ func (p *ezbpfParser) VarInitStmt() (localctx IVarInitStmtContext) {
 		}
 	}
 	{
-		p.SetState(161)
+		p.SetState(187)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3769,7 +4192,7 @@ func (p *ezbpfParser) VarInitStmt() (localctx IVarInitStmtContext) {
 		}
 	}
 	{
-		p.SetState(162)
+		p.SetState(188)
 		p.Match(ezbpfParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3777,11 +4200,11 @@ func (p *ezbpfParser) VarInitStmt() (localctx IVarInitStmtContext) {
 		}
 	}
 	{
-		p.SetState(163)
+		p.SetState(189)
 		p.Type_()
 	}
 	{
-		p.SetState(164)
+		p.SetState(190)
 		p.Match(ezbpfParserSEMI)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3938,10 +4361,10 @@ func (s *VarDeclStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 
 func (p *ezbpfParser) VarDeclStmt() (localctx IVarDeclStmtContext) {
 	localctx = NewVarDeclStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 24, ezbpfParserRULE_varDeclStmt)
+	p.EnterRule(localctx, 26, ezbpfParserRULE_varDeclStmt)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(166)
+		p.SetState(192)
 		p.Match(ezbpfParserVAR)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3949,7 +4372,7 @@ func (p *ezbpfParser) VarDeclStmt() (localctx IVarDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(167)
+		p.SetState(193)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3957,7 +4380,7 @@ func (p *ezbpfParser) VarDeclStmt() (localctx IVarDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(168)
+		p.SetState(194)
 		p.Match(ezbpfParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3965,19 +4388,19 @@ func (p *ezbpfParser) VarDeclStmt() (localctx IVarDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(169)
+		p.SetState(195)
 		p.Type_()
 	}
 	{
-		p.SetState(170)
+		p.SetState(196)
 		p.Assign()
 	}
 	{
-		p.SetState(171)
+		p.SetState(197)
 		p.expression(0)
 	}
 	{
-		p.SetState(172)
+		p.SetState(198)
 		p.Match(ezbpfParserSEMI)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4134,10 +4557,10 @@ func (s *ConstDeclStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 
 func (p *ezbpfParser) ConstDeclStmt() (localctx IConstDeclStmtContext) {
 	localctx = NewConstDeclStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 26, ezbpfParserRULE_constDeclStmt)
+	p.EnterRule(localctx, 28, ezbpfParserRULE_constDeclStmt)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(174)
+		p.SetState(200)
 		p.Match(ezbpfParserCONST)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4145,7 +4568,7 @@ func (p *ezbpfParser) ConstDeclStmt() (localctx IConstDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(175)
+		p.SetState(201)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4153,7 +4576,7 @@ func (p *ezbpfParser) ConstDeclStmt() (localctx IConstDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(176)
+		p.SetState(202)
 		p.Match(ezbpfParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4161,19 +4584,19 @@ func (p *ezbpfParser) ConstDeclStmt() (localctx IConstDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(177)
+		p.SetState(203)
 		p.Type_()
 	}
 	{
-		p.SetState(178)
+		p.SetState(204)
 		p.Assign()
 	}
 	{
-		p.SetState(179)
+		p.SetState(205)
 		p.expression(0)
 	}
 	{
-		p.SetState(180)
+		p.SetState(206)
 		p.Match(ezbpfParserSEMI)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4289,15 +4712,15 @@ func (s *MapTypeContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) MapType() (localctx IMapTypeContext) {
 	localctx = NewMapTypeContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 28, ezbpfParserRULE_mapType)
+	p.EnterRule(localctx, 30, ezbpfParserRULE_mapType)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(182)
+		p.SetState(208)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64((_la-71)) & ^0x3f) == 0 && ((int64(1)<<(_la-71))&63) != 0) {
+		if !((int64((_la-72)) & ^0x3f) == 0 && ((int64(1)<<(_la-72))&63) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -4488,10 +4911,10 @@ func (s *MapDeclStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{} 
 
 func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 	localctx = NewMapDeclStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 30, ezbpfParserRULE_mapDeclStmt)
+	p.EnterRule(localctx, 32, ezbpfParserRULE_mapDeclStmt)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(184)
+		p.SetState(210)
 		p.Match(ezbpfParserMAP)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4499,7 +4922,7 @@ func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(185)
+		p.SetState(211)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4507,7 +4930,7 @@ func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(186)
+		p.SetState(212)
 		p.Match(ezbpfParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4515,11 +4938,11 @@ func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(187)
+		p.SetState(213)
 		p.MapType()
 	}
 	{
-		p.SetState(188)
+		p.SetState(214)
 		p.Match(ezbpfParserLT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4527,11 +4950,11 @@ func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(189)
+		p.SetState(215)
 		p.Type_()
 	}
 	{
-		p.SetState(190)
+		p.SetState(216)
 		p.Match(ezbpfParserCOMMA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4539,11 +4962,11 @@ func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(191)
+		p.SetState(217)
 		p.Type_()
 	}
 	{
-		p.SetState(192)
+		p.SetState(218)
 		p.Match(ezbpfParserCOMMA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4551,7 +4974,7 @@ func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(193)
+		p.SetState(219)
 		p.Match(ezbpfParserDEC_LITERAL)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4559,7 +4982,7 @@ func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(194)
+		p.SetState(220)
 		p.Match(ezbpfParserGT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4567,7 +4990,7 @@ func (p *ezbpfParser) MapDeclStmt() (localctx IMapDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(195)
+		p.SetState(221)
 		p.Match(ezbpfParserSEMI)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4685,10 +5108,10 @@ func (s *StructDataMemStmtContext) Accept(visitor antlr.ParseTreeVisitor) interf
 
 func (p *ezbpfParser) StructDataMemStmt() (localctx IStructDataMemStmtContext) {
 	localctx = NewStructDataMemStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 32, ezbpfParserRULE_structDataMemStmt)
+	p.EnterRule(localctx, 34, ezbpfParserRULE_structDataMemStmt)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(197)
+		p.SetState(223)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4696,7 +5119,7 @@ func (p *ezbpfParser) StructDataMemStmt() (localctx IStructDataMemStmtContext) {
 		}
 	}
 	{
-		p.SetState(198)
+		p.SetState(224)
 		p.Match(ezbpfParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4704,11 +5127,11 @@ func (p *ezbpfParser) StructDataMemStmt() (localctx IStructDataMemStmtContext) {
 		}
 	}
 	{
-		p.SetState(199)
+		p.SetState(225)
 		p.Type_()
 	}
 	{
-		p.SetState(200)
+		p.SetState(226)
 		p.Match(ezbpfParserSEMI)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4857,12 +5280,12 @@ func (s *StructDeclStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface
 
 func (p *ezbpfParser) StructDeclStmt() (localctx IStructDeclStmtContext) {
 	localctx = NewStructDeclStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 34, ezbpfParserRULE_structDeclStmt)
+	p.EnterRule(localctx, 36, ezbpfParserRULE_structDeclStmt)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(202)
+		p.SetState(228)
 		p.Match(ezbpfParserSTRUCT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4870,7 +5293,7 @@ func (p *ezbpfParser) StructDeclStmt() (localctx IStructDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(203)
+		p.SetState(229)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -4878,14 +5301,14 @@ func (p *ezbpfParser) StructDeclStmt() (localctx IStructDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(204)
+		p.SetState(230)
 		p.Match(ezbpfParserLBRA)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(208)
+	p.SetState(234)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -4894,11 +5317,11 @@ func (p *ezbpfParser) StructDeclStmt() (localctx IStructDeclStmtContext) {
 
 	for _la == ezbpfParserIDENTIFIER {
 		{
-			p.SetState(205)
+			p.SetState(231)
 			p.StructDataMemStmt()
 		}
 
-		p.SetState(210)
+		p.SetState(236)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -4906,7 +5329,7 @@ func (p *ezbpfParser) StructDeclStmt() (localctx IStructDeclStmtContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(211)
+		p.SetState(237)
 		p.Match(ezbpfParserRBRA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5051,10 +5474,10 @@ func (s *IfStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) IfStmt() (localctx IIfStmtContext) {
 	localctx = NewIfStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 36, ezbpfParserRULE_ifStmt)
+	p.EnterRule(localctx, 38, ezbpfParserRULE_ifStmt)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(213)
+		p.SetState(239)
 		p.Match(ezbpfParserIF)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5062,7 +5485,7 @@ func (p *ezbpfParser) IfStmt() (localctx IIfStmtContext) {
 		}
 	}
 	{
-		p.SetState(214)
+		p.SetState(240)
 		p.Match(ezbpfParserLPAR)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5070,11 +5493,11 @@ func (p *ezbpfParser) IfStmt() (localctx IIfStmtContext) {
 		}
 	}
 	{
-		p.SetState(215)
+		p.SetState(241)
 		p.expression(0)
 	}
 	{
-		p.SetState(216)
+		p.SetState(242)
 		p.Match(ezbpfParserRPAR)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5082,7 +5505,7 @@ func (p *ezbpfParser) IfStmt() (localctx IIfStmtContext) {
 		}
 	}
 	{
-		p.SetState(217)
+		p.SetState(243)
 		p.Match(ezbpfParserLBRA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5090,11 +5513,11 @@ func (p *ezbpfParser) IfStmt() (localctx IIfStmtContext) {
 		}
 	}
 	{
-		p.SetState(218)
+		p.SetState(244)
 		p.Stmts()
 	}
 	{
-		p.SetState(219)
+		p.SetState(245)
 		p.Match(ezbpfParserRBRA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5207,34 +5630,34 @@ func (s *ReturnStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) ReturnStmt() (localctx IReturnStmtContext) {
 	localctx = NewReturnStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 38, ezbpfParserRULE_returnStmt)
+	p.EnterRule(localctx, 40, ezbpfParserRULE_returnStmt)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(221)
+		p.SetState(247)
 		p.Match(ezbpfParserRETURN)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(223)
+	p.SetState(249)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	if (int64((_la-26)) & ^0x3f) == 0 && ((int64(1)<<(_la-26))&2251799813749761) != 0 {
+	if (int64((_la-26)) & ^0x3f) == 0 && ((int64(1)<<(_la-26))&4503599627435025) != 0 {
 		{
-			p.SetState(222)
+			p.SetState(248)
 			p.expression(0)
 		}
 
 	}
 	{
-		p.SetState(225)
+		p.SetState(251)
 		p.Match(ezbpfParserSEMI)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5406,12 +5829,12 @@ func (s *FuncDeclStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 
 func (p *ezbpfParser) FuncDeclStmt() (localctx IFuncDeclStmtContext) {
 	localctx = NewFuncDeclStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 40, ezbpfParserRULE_funcDeclStmt)
+	p.EnterRule(localctx, 42, ezbpfParserRULE_funcDeclStmt)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(227)
+		p.SetState(253)
 		p.Match(ezbpfParserFN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5419,7 +5842,7 @@ func (p *ezbpfParser) FuncDeclStmt() (localctx IFuncDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(228)
+		p.SetState(254)
 		p.Match(ezbpfParserIDENTIFIER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5427,14 +5850,14 @@ func (p *ezbpfParser) FuncDeclStmt() (localctx IFuncDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(229)
+		p.SetState(255)
 		p.Match(ezbpfParserLPAR)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(231)
+	p.SetState(257)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -5443,13 +5866,13 @@ func (p *ezbpfParser) FuncDeclStmt() (localctx IFuncDeclStmtContext) {
 
 	if _la == ezbpfParserIDENTIFIER {
 		{
-			p.SetState(230)
+			p.SetState(256)
 			p.Params()
 		}
 
 	}
 	{
-		p.SetState(233)
+		p.SetState(259)
 		p.Match(ezbpfParserRPAR)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5457,7 +5880,7 @@ func (p *ezbpfParser) FuncDeclStmt() (localctx IFuncDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(234)
+		p.SetState(260)
 		p.Match(ezbpfParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5465,11 +5888,11 @@ func (p *ezbpfParser) FuncDeclStmt() (localctx IFuncDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(235)
+		p.SetState(261)
 		p.Type_()
 	}
 	{
-		p.SetState(236)
+		p.SetState(262)
 		p.Match(ezbpfParserLBRA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5477,12 +5900,127 @@ func (p *ezbpfParser) FuncDeclStmt() (localctx IFuncDeclStmtContext) {
 		}
 	}
 	{
-		p.SetState(237)
+		p.SetState(263)
 		p.Stmts()
 	}
 	{
-		p.SetState(238)
+		p.SetState(264)
 		p.Match(ezbpfParserRBRA)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// IFuncCallStmtContext is an interface to support dynamic dispatch.
+type IFuncCallStmtContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	FuncCallExpression() IFuncCallExpressionContext
+	SEMI() antlr.TerminalNode
+
+	// IsFuncCallStmtContext differentiates from other interfaces.
+	IsFuncCallStmtContext()
+}
+
+type FuncCallStmtContext struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyFuncCallStmtContext() *FuncCallStmtContext {
+	var p = new(FuncCallStmtContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ezbpfParserRULE_funcCallStmt
+	return p
+}
+
+func InitEmptyFuncCallStmtContext(p *FuncCallStmtContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ezbpfParserRULE_funcCallStmt
+}
+
+func (*FuncCallStmtContext) IsFuncCallStmtContext() {}
+
+func NewFuncCallStmtContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *FuncCallStmtContext {
+	var p = new(FuncCallStmtContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = ezbpfParserRULE_funcCallStmt
+
+	return p
+}
+
+func (s *FuncCallStmtContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *FuncCallStmtContext) FuncCallExpression() IFuncCallExpressionContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFuncCallExpressionContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFuncCallExpressionContext)
+}
+
+func (s *FuncCallStmtContext) SEMI() antlr.TerminalNode {
+	return s.GetToken(ezbpfParserSEMI, 0)
+}
+
+func (s *FuncCallStmtContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *FuncCallStmtContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *FuncCallStmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case ezbpfVisitor:
+		return t.VisitFuncCallStmt(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+func (p *ezbpfParser) FuncCallStmt() (localctx IFuncCallStmtContext) {
+	localctx = NewFuncCallStmtContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 44, ezbpfParserRULE_funcCallStmt)
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(266)
+		p.FuncCallExpression()
+	}
+	{
+		p.SetState(267)
+		p.Match(ezbpfParserSEMI)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
@@ -5518,6 +6056,7 @@ type IStmtContext interface {
 	IfStmt() IIfStmtContext
 	ReturnStmt() IReturnStmtContext
 	FuncDeclStmt() IFuncDeclStmtContext
+	FuncCallStmt() IFuncCallStmtContext
 
 	// IsStmtContext differentiates from other interfaces.
 	IsStmtContext()
@@ -5683,6 +6222,22 @@ func (s *StmtContext) FuncDeclStmt() IFuncDeclStmtContext {
 	return t.(IFuncDeclStmtContext)
 }
 
+func (s *StmtContext) FuncCallStmt() IFuncCallStmtContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFuncCallStmtContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFuncCallStmtContext)
+}
+
 func (s *StmtContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -5703,68 +6258,75 @@ func (s *StmtContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Stmt() (localctx IStmtContext) {
 	localctx = NewStmtContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 42, ezbpfParserRULE_stmt)
-	p.SetState(248)
+	p.EnterRule(localctx, 46, ezbpfParserRULE_stmt)
+	p.SetState(278)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 
-	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 11, p.GetParserRuleContext()) {
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 13, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(240)
+			p.SetState(269)
 			p.VarInitStmt()
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(241)
+			p.SetState(270)
 			p.VarDeclStmt()
 		}
 
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(242)
+			p.SetState(271)
 			p.ConstDeclStmt()
 		}
 
 	case 4:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(243)
+			p.SetState(272)
 			p.MapDeclStmt()
 		}
 
 	case 5:
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(244)
+			p.SetState(273)
 			p.StructDeclStmt()
 		}
 
 	case 6:
 		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(245)
+			p.SetState(274)
 			p.IfStmt()
 		}
 
 	case 7:
 		p.EnterOuterAlt(localctx, 7)
 		{
-			p.SetState(246)
+			p.SetState(275)
 			p.ReturnStmt()
 		}
 
 	case 8:
 		p.EnterOuterAlt(localctx, 8)
 		{
-			p.SetState(247)
+			p.SetState(276)
 			p.FuncDeclStmt()
+		}
+
+	case 9:
+		p.EnterOuterAlt(localctx, 9)
+		{
+			p.SetState(277)
+			p.FuncCallStmt()
 		}
 
 	case antlr.ATNInvalidAltNumber:
@@ -5892,24 +6454,24 @@ func (s *StmtsContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Stmts() (localctx IStmtsContext) {
 	localctx = NewStmtsContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 44, ezbpfParserRULE_stmts)
+	p.EnterRule(localctx, 48, ezbpfParserRULE_stmts)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(253)
+	p.SetState(283)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for (int64((_la-52)) & ^0x3f) == 0 && ((int64(1)<<(_la-52))&319747) != 0 {
+	for (int64((_la-52)) & ^0x3f) == 0 && ((int64(1)<<(_la-52))&67748355) != 0 {
 		{
-			p.SetState(250)
+			p.SetState(280)
 			p.Stmt()
 		}
 
-		p.SetState(255)
+		p.SetState(285)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -6124,11 +6686,11 @@ func (s *ProgContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 
 func (p *ezbpfParser) Prog() (localctx IProgContext) {
 	localctx = NewProgContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 46, ezbpfParserRULE_prog)
+	p.EnterRule(localctx, 50, ezbpfParserRULE_prog)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(259)
+	p.SetState(289)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -6137,18 +6699,18 @@ func (p *ezbpfParser) Prog() (localctx IProgContext) {
 
 	for _la == ezbpfParserSTRUCT {
 		{
-			p.SetState(256)
+			p.SetState(286)
 			p.StructDeclStmt()
 		}
 
-		p.SetState(261)
+		p.SetState(291)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
 		}
 		_la = p.GetTokenStream().LA(1)
 	}
-	p.SetState(265)
+	p.SetState(295)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -6157,18 +6719,18 @@ func (p *ezbpfParser) Prog() (localctx IProgContext) {
 
 	for _la == ezbpfParserMAP {
 		{
-			p.SetState(262)
+			p.SetState(292)
 			p.MapDeclStmt()
 		}
 
-		p.SetState(267)
+		p.SetState(297)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
 		}
 		_la = p.GetTokenStream().LA(1)
 	}
-	p.SetState(269)
+	p.SetState(299)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -6177,11 +6739,11 @@ func (p *ezbpfParser) Prog() (localctx IProgContext) {
 
 	for ok := true; ok; ok = _la == ezbpfParserFN {
 		{
-			p.SetState(268)
+			p.SetState(298)
 			p.FuncDeclStmt()
 		}
 
-		p.SetState(271)
+		p.SetState(301)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -6204,7 +6766,7 @@ errorExit:
 
 func (p *ezbpfParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex int) bool {
 	switch ruleIndex {
-	case 3:
+	case 4:
 		var t *ExpressionContext = nil
 		if localctx != nil {
 			t = localctx.(*ExpressionContext)
@@ -6252,6 +6814,9 @@ func (p *ezbpfParser) Expression_Sempred(localctx antlr.RuleContext, predIndex i
 		return p.Precpred(p.GetParserRuleContext(), 1)
 
 	case 11:
+		return p.Precpred(p.GetParserRuleContext(), 15)
+
+	case 12:
 		return p.Precpred(p.GetParserRuleContext(), 13)
 
 	default:

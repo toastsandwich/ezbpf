@@ -1,0 +1,209 @@
+A) Cover and front page should be CENTER ALIGNED
+
+2-Blank spaces
+A PROJECT REPORT ON
+(12/bold/upper case)
+(Two blank spaces)
+<<PROJECT TITLE>>
+(16/bold/upper case) (Two blank spaces)
+
+IN THE PARTIAL FULFILLMENT FOR THE AWARD OF THE DEGREE
+
+(12/upper case)
+(One blank space)
+OF
+
+(12/upper case) (Two blank spaces)
+BACHELOR OF TECHNOLOGY
+
+IN
+
+INFORMATION TECHNOLOGY
+(16/bold/upper case) (Two blank spaces)
+
+BY
+
+(14/bold/upper case) (Two blank spaces)
+
+<<Name of Student 1 >> <<PRN NO: 1>>(14/bold/upper case)
+<<Name of Student 2 >> <<PRN NO: 2 >>
+
+(Two blank space)
+
+UNDER THE GUIDANCE OF (14/bold/upper case)
+<<Guide Name>>(14/bold/upper case)
+
+<<College Logo>>
+
+DEPARTMENT OF INFORMATION TECHNOLOGY
+<<COLLEGE NAME>>(12/bold/upper case)
+<<Address>>(12/bold/upper case)
+
+[An Autonomous Institute Affiliated to Savitribai Phule Pune University]
+
+<<Academic Year>>(12/bold/upper case)
+
+A) CERTIFICATE
+(Six blank space)
+CERTIFICATE (16/bold/uppercase)
+(Three blank space)
+
+B) CONTENTS
+(Four blank space)
+
+CONTENTS (14/bold/upper case)
+
+CERTIFICATE FROM INDUSTRY (12/bold/upper case) I (12/bold/upper case)
+ACKNOWLEDGEMENT II (12/bold/upper case)
+LIST OF FIGURES III (12/bold/upper case)
+LIST OF TABLES IV (12/bold/upper case)
+LIST OF ABBREVIATIONS V (12/bold/upper case)
+ABSTRACT VI
+
+CHAPTER
+(14/bold/upper
+case)
+
+TITLE PAGE NO.
+
+1. INTRODUCTION
+1.1 Background
+1.2 Motivation
+1.3 Aims and objectives
+1.4 Sustainable Development Goals (SDG) addressed
+1.5 Organization of Project Report
+
+2. LITERATURE REVIEW (12/bold/upper
+case)
+
+Minimum 10 research papers should be reviewed
+
+3. REQUIREMENTS (12/bold/upper
+case)
+
+3.1 Functional (Specific to project)
+3.2 Nonfunctional (Specific to project)
+
+3.3 Tools & Technologies Used
+(List of technologies, languages, frameworks, and tools.)
+
+4. PROJECT PLAN (12/bold/upper
+case)
+
+4.1 Project Phases & Timeline (Breakdown of tasks with deadlines)
+
+4.2
+Cost estimation
+Lines of code (total number of lines of code)
+Effort estimation using COCOMO model
+Cost Categories (Breakdown of hardware, software, development,
+hosting, etc.)
+Hardware Cost Estimation (Laptops, servers, cloud, IoT devices)
+Software Cost Estimation (Licenses, operating systems, IDEs,
+databases)
+Development Cost Estimation (Effort estimation, salaries if
+applicable)
+Hosting & Deployment Costs (Cloud hosting, domain, SSL)
+
+5. METHODOLOGY (12/bold/upper
+case)
+
+5.1
+Introduction
+(Brief explanation of the proposed methodology and why it was
+chosen.)
+
+5.2
+System Architecture
+(Overview with a diagram explaining different modules.)
+
+5.3 Algorithm
+(Description of key algorithms)
+
+6. DESIGN (12/bold/upper
+
+case)
+
+6.1 Use case Diagram
+6.2 Class Diagram
+
+6.3 Sequence Diagram
+6.4 Activity Diagram
+6.5 ER Diagram
+6.6 Component Diagram
+6.7 Deployment Diagram (For network/cloud-based projects)
+
+7. IMPLEMENTATION (12/bold/upper
+case)
+
+7.1 Module-wise Implementation (Breakdown of functionalities in
+different modules)
+7.2 Code Snippets & Explanation (Key algorithms and their logic)
+7.3
+Database Implementation (Schema, ER diagrams, SQL table
+structures)
+
+8. TESTING (12/bold/upper
+case)
+
+8.1 Functionality Testing
+8.2. Performance Testing
+8.3 Database Independence Testing
+
+8.4
+Testing Methodologies Used (Unit, Integration, Functional,
+Performance, etc.)
+
+8.5
+Test Environment & Tools (List of testing tools and
+hardware/software setup)
+
+8.6
+Manual Test Cases (Detailed test cases with input, output, and
+status)
+
+8.7
+Performance Testing Results (System performance metrics and
+analysis)
+8.8 Test Results
+
+9. RESULTS AND DISCUSSIONS (12/bold/upper
+case)
+
+9.1
+Experimental Setup and Testing
+(Describe the testing environment, parameters, and setup details.)
+
+9.2
+Development Environment & Tools
+● List the programming languages, frameworks, libraries, and
+tools used.
+● Mention the IDE (e.g., VS Code, PyCharm, Android Studio).
+● Specify databases, APIs, or third-party services integrated.
+● Example:
+o Frontend: React.js, HTML, CSS, JavaScript
+o Backend: Node.js, Express.js
+o Database: MySQL, Firebase
+o Development Tools: Git, Postman, Docker
+
+9.3
+Observed Results
+(Table, Graphs, Figures, Performance Analysis)
+
+9.4
+Analysis and Interpretation
+(Explanation of trends, deviations, and insights.)
+
+9.5
+Comparison with Existing Solutions
+(How does your solution perform compared to others?)
+
+10. CONCLUSIONS AND FUTURE WORK (12/bold/uppercase)
+
+11. REFERENCES (12/bold/uppercase)
+
+12. APPENDIX (12/bold/uppercase)
+A. Plagiarism Report
+B. Publications/Patents
+C. Certificates/Awards
+

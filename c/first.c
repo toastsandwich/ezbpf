@@ -18,7 +18,7 @@ struct {
 } mm .SEC("maps");
 
 struct foo Foo() {
-	struct foo f = {};
+	struct foo f = {9,10};
 return f;
 }
 
@@ -26,9 +26,10 @@ return f;
 int new() {
 	int i = 10;
 long j = i + 10;
-__u32 k = j*j + 10;
-struct foo g = {};
-struct foo f = Foo();;
+__u32 k = j * j + 10;
+struct foo g = {0,0};
+struct foo f = Foo();
+bpf_map_update_elem(m,k,j,BPF_ANY);
 return f;
 }
 

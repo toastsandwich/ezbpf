@@ -7,6 +7,9 @@ import "github.com/antlr4-go/antlr/v4"
 type ezbpfVisitor interface {
 	antlr.ParseTreeVisitor
 
+	// Visit a parse tree produced by ezbpfParser#baseType.
+	VisitBaseType(ctx *BaseTypeContext) interface{}
+
 	// Visit a parse tree produced by ezbpfParser#type.
 	VisitType(ctx *TypeContext) interface{}
 
@@ -52,6 +55,9 @@ type ezbpfVisitor interface {
 	// Visit a parse tree produced by ezbpfParser#compareExpression.
 	VisitCompareExpression(ctx *CompareExpressionContext) interface{}
 
+	// Visit a parse tree produced by ezbpfParser#arrayLiteralExpression.
+	VisitArrayLiteralExpression(ctx *ArrayLiteralExpressionContext) interface{}
+
 	// Visit a parse tree produced by ezbpfParser#addExpression.
 	VisitAddExpression(ctx *AddExpressionContext) interface{}
 
@@ -69,6 +75,9 @@ type ezbpfVisitor interface {
 
 	// Visit a parse tree produced by ezbpfParser#rshiftExpression.
 	VisitRshiftExpression(ctx *RshiftExpressionContext) interface{}
+
+	// Visit a parse tree produced by ezbpfParser#indexExpression.
+	VisitIndexExpression(ctx *IndexExpressionContext) interface{}
 
 	// Visit a parse tree produced by ezbpfParser#parExpression.
 	VisitParExpression(ctx *ParExpressionContext) interface{}
@@ -132,6 +141,9 @@ type ezbpfVisitor interface {
 
 	// Visit a parse tree produced by ezbpfParser#funcDeclStmt.
 	VisitFuncDeclStmt(ctx *FuncDeclStmtContext) interface{}
+
+	// Visit a parse tree produced by ezbpfParser#funcCallStmt.
+	VisitFuncCallStmt(ctx *FuncCallStmtContext) interface{}
 
 	// Visit a parse tree produced by ezbpfParser#stmt.
 	VisitStmt(ctx *StmtContext) interface{}
